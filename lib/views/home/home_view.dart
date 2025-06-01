@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/config/app_colors.dart';
-import 'package:flutter_pokedex/core/constants/app_assets.dart';
+import 'package:flutter_pokedex/shared/widgets/home_top_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/scaffold_widget.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -16,16 +16,12 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return ScaffoldWidget(
       backgroundColor: AppColors.identityPrimary,
-      body: Column(
-        children: [
-          SvgPicture.asset(
-            AppAssets.pokeball,
-            width: 100,
-            height: 100,
-            color: Colors.white,
-          ),
-          Container(),
-        ],
+      body: Padding(
+        padding: EdgeInsets.all(4.h),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [HomeTopWidget()],
+        ),
       ),
     );
   }

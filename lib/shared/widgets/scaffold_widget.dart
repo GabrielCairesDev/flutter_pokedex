@@ -12,6 +12,9 @@ class ScaffoldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(backgroundColor: backgroundColor, body: body);
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: SafeArea(child: body),
+    );
   }
 }
