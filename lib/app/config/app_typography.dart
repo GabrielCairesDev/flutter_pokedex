@@ -30,25 +30,25 @@ class AppTypography {
   // Body
   TextStyle body1 = TextStyle(
     fontSize: 14.sp,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.normal,
     height: 14.h / 16.sp,
   );
 
   TextStyle body2 = TextStyle(
     fontSize: 12.sp,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.normal,
     height: 12.h / 16.sp,
   );
 
   TextStyle body3 = TextStyle(
     fontSize: 10.sp,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.normal,
     height: 10.h / 16.sp,
   );
 
   TextStyle caption = TextStyle(
     fontSize: 8.sp,
-    fontWeight: FontWeight.bold,
+    fontWeight: FontWeight.normal,
     height: 8.h / 12.sp,
   );
 }
