@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/app/config/app_colors.dart';
 import 'package:flutter_pokedex/shared/widgets/scaffold_widget.dart';
 
 class HomeView extends StatefulWidget {
@@ -11,6 +12,9 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
-    return ScaffoldWidget(backgroundColor: Colors.blue, body: Container());
+    return ScaffoldWidget(
+      backgroundColor: AppColors.identityPrimary,
+      body: Container(),
+    );
   }
 }
