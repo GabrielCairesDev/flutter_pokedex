@@ -1,0 +1,139 @@
+# ==========================================
+# SISTEMA / TEMPORÁRIOS / BACKUPS
+# ==========================================
+*.class
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*.swn
+*.sublime-workspace
+*.sublime-project
+*.kate-swp
+*.orig
+*.rej
+*.patch
+*.diff
+*.pid
+.DS_Store
+ehthumbs.db
+Thumbs.db
+desktop.ini
+Icon?
+
+# ==========================================
+# GIT
+# ==========================================
+*.orig
+*.rej
+*.patch
+*.diff
+
+# ==========================================
+# EDITORES
+# ==========================================
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.code-workspace
+
+# ==========================================
+# FLUTTER / DART
+# ==========================================
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter-versions
+.fvm/
+.melos_tool/
+.melos_workspace/
+.packages
+.pub/
+.pub-cache/
+.pub-cache/**/*
+build/
+**/build/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# Arquivos de saída da build (mapas e símbolos)
+app.*.map.json
+app.*.symbols
+
+# Arquivos gerados e overrides
+pubspec.lock
+pubspec_overrides.yaml
+
+# ==========================================
+# ANDROID
+# ==========================================
+/android/.gradle/
+/android/.idea/
+/android/local.properties
+/android/captures/
+/android/build/
+/android/*.iml
+/android/gradle/
+/android/gradlew
+/android/gradlew.bat
+
+# ==========================================
+# iOS / macOS
+# ==========================================
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/.symlinks/
+/ios/Pods/
+/ios/Runner.xcworkspace/
+/ios/build/
+/ios/Flutter/App.framework
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral/
+**/macos/Flutter/ephemeral/
+**/macos/Pods/
+**/macos/build/
+/ios/.dart_tool/
+/macos/.dart_tool/
+/macos/.DS_Store
+
+# ==========================================
+# XCODE
+# ==========================================
+*.xcuserstate
+*.xcworkspace
+*.xcsettings
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# ==========================================
+# CREDENCIAIS / SEGURANÇA
+# ==========================================
+.env
+.env.*
+*.keystore
+*.jks
+*.p12
+*.pem
+*.key
+*.crt
+*.der
+
+# ==========================================
+# OUTROS
+# ==========================================
+.migrate_working_dir/
+.history
+.atom/
+.build/
+.buildlog/
+.svn/
+.swiftpm/
