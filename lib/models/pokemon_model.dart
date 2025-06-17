@@ -28,14 +28,17 @@ class PokemonModel {
     required this.sdef,
     required this.spd,
   });
-
   factory PokemonModel.fromJson(Map<String, dynamic> json) {
     return PokemonModel(
       id: json['id'] ?? 0,
       name: json['name'] ?? '',
-      imageUrl: json['imageUrl'] ?? '',
-      tipos: (json['tipos'] != null)
-          ? List<String>.from(json['tipos'])
+      imageUrl: json['sprites']?['front_default'] ?? '',
+      tipos: (json['types'] != null)
+          ? List<String>.from(
+              (json['types'] as List).map(
+                (type) => type['type']['name'] as String,
+              ),
+            )
           : <String>[],
       weight: (json['weight'] != null)
           ? (json['weight'] as num).toDouble()
@@ -44,14 +47,18 @@ class PokemonModel {
           ? (json['height'] as num).toDouble()
           : 0.0,
       moves: (json['moves'] != null)
-          ? List<String>.from(json['moves'])
+          ? List<String>.from(
+              (json['moves'] as List).map(
+                (move) => move['move']['name'] as String,
+              ),
+            )
           : <String>[],
-      hp: json['hp'] ?? 0,
-      atk: json['atk'] ?? 0,
-      def: json['def'] ?? 0,
-      satk: json['satk'] ?? 0,
-      sdef: json['sdef'] ?? 0,
-      spd: json['spd'] ?? 0,
+      hp: json['stats'] != null ? (json['stats'][0]['base_stat'] ?? 0) : 0,
+      atk: json['stats'] != null ? (json['stats'][1]['base_stat'] ?? 0) : 0,
+      def: json['stats'] != null ? (json['stats'][2]['base_stat'] ?? 0) : 0,
+      satk: json['stats'] != null ? (json['stats'][3]['base_stat'] ?? 0) : 0,
+      sdef: json['stats'] != null ? (json['stats'][4]['base_stat'] ?? 0) : 0,
+      spd: json['stats'] != null ? (json['stats'][5]['base_stat'] ?? 0) : 0,
     );
   }
 
