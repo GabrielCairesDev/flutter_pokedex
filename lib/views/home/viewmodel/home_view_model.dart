@@ -6,14 +6,13 @@ import 'package:http/http.dart' as http;
 
 class HomeViewModel extends ChangeNotifier {
   int _qunatityPokemons = 0;
-  int _qunatityPokemonsCaught = 0;
+  final ValueNotifier<int> quantityPokemonsCaught = ValueNotifier<int>(0);
 
   bool _isLoading = true;
 
   final List<PokemonModel> _listPokemons = [];
 
   int get qunatityPokemons => _qunatityPokemons;
-  int get qunatityPokemonsCaught => _qunatityPokemonsCaught;
 
   bool get isLoading => _isLoading;
 
@@ -24,6 +23,7 @@ class HomeViewModel extends ChangeNotifier {
     await _getQuantityPokemons();
     await _getAllPokemons();
     _isLoading = false;
+    notifyListeners();
   }
 
   Future<void> _getQuantityPokemons() async {
@@ -60,16 +60,16 @@ class HomeViewModel extends ChangeNotifier {
 
       final List<PokemonModel?> batchResults = await Future.wait(batchFutures);
 
+      int pokemonsAdicionados = 0;
+
       for (var pokemon in batchResults) {
         if (pokemon != null) {
           _listPokemons.add(pokemon);
-          _qunatityPokemonsCaught++;
-          debugPrint('${pokemon.id} Pokémon ${pokemon.name} adicionado');
+          pokemonsAdicionados++;
         }
       }
 
-      notifyListeners();
-      debugPrint(' até Pokémon ${i + batchSize - 1} concluído');
+      quantityPokemonsCaught.value += pokemonsAdicionados;
     }
   }
 
@@ -91,8 +91,6 @@ class HomeViewModel extends ChangeNotifier {
     } catch (e) {
       debugPrint('Erro ao buscar Pokémon $id: $e');
       return null;
-    } finally {
-      notifyListeners();
     }
   }
 }
