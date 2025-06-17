@@ -5,12 +5,25 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HomeViewModel extends ChangeNotifier {
-  int qunatityPokemons = 0;
-  List<PokemonModel> listPokemons = [];
+  int _qunatityPokemons = 0;
+  int _qunatityPokemonsCaught = 0;
+
+  bool _isLoading = false;
+
+  final List<PokemonModel> _listPokemons = [];
+
+  int get qunatityPokemons => _qunatityPokemons;
+  int get qunatityPokemonsCaught => _qunatityPokemonsCaught;
+
+  bool get isLoadingPokemons => _isLoading;
+
+  List<PokemonModel> get listPokemons => _listPokemons;
 
   Future<void> init() async {
+    _isLoading = true;
     await _getQuantityPokemons();
     await _getAllPokemons();
+    _isLoading = false;
   }
 
   Future<void> _getQuantityPokemons() async {
@@ -21,8 +34,8 @@ class HomeViewModel extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        qunatityPokemons = data['count'];
-        debugPrint('Quantidade de Pokémons: $qunatityPokemons');
+        _qunatityPokemons = data['count'];
+        debugPrint('Quantidade de Pokémons: $_qunatityPokemons');
       } else {
         debugPrint('Falha na requisição. Status code: ${response.statusCode}');
       }
@@ -32,13 +45,16 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   Future<void> _getAllPokemons() async {
-    listPokemons.clear();
+    _listPokemons.clear();
 
-    for (int i = 1; i <= qunatityPokemons; i++) {
+    for (int i = 1; i <= _qunatityPokemons; i++) {
       final pokemon = await _getPokemonById(i);
 
       if (pokemon != null) {
-        listPokemons.add(pokemon);
+        _listPokemons.add(pokemon);
+
+        _qunatityPokemonsCaught++;
+
         debugPrint('$i Pokémon adicionado: ${pokemon.name}');
       }
     }
