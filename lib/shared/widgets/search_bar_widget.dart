@@ -22,21 +22,24 @@ class SearchBarWidget extends StatelessWidget {
       borderSide: BorderSide.none,
     );
 
-    return TextFormField(
-      style: textStyle,
-      decoration: InputDecoration(
-        hintText: 'Search',
-        hintStyle: textStyle,
-        filled: true,
-        fillColor: AppColors.grayScaleWhite,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20),
-        prefixIcon: _PrefixIcon(),
-        enabledBorder: outlineInputBorder,
-        focusedBorder: outlineInputBorder,
-        border: OutlineInputBorder(borderRadius: borderRadius),
-        focusedErrorBorder: OutlineInputBorder(borderRadius: borderRadius),
-        errorBorder: OutlineInputBorder(borderRadius: borderRadius),
-        disabledBorder: OutlineInputBorder(borderRadius: borderRadius),
+    return SizedBox(
+      height: 32.h,
+      child: TextFormField(
+        style: textStyle,
+        decoration: InputDecoration(
+          hintText: 'Search',
+          hintStyle: textStyle,
+          filled: true,
+          fillColor: AppColors.grayScaleWhite,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+          prefixIcon: _PrefixIcon(),
+          enabledBorder: outlineInputBorder,
+          focusedBorder: outlineInputBorder,
+          border: OutlineInputBorder(borderRadius: borderRadius),
+          focusedErrorBorder: OutlineInputBorder(borderRadius: borderRadius),
+          errorBorder: OutlineInputBorder(borderRadius: borderRadius),
+          disabledBorder: OutlineInputBorder(borderRadius: borderRadius),
+        ),
       ),
     );
   }
