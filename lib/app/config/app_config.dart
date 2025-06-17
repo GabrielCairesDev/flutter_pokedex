@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/views/home/view/home_view.dart';
+import 'package:flutter_pokedex/presentation/home/view/home_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppConfig extends StatelessWidget {

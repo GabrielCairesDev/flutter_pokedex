@@ -4,7 +4,7 @@ import 'package:flutter_pokedex/shared/widgets/back_ground_grid_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/grid_view_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/home_top_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/scaffold_widget.dart';
-import 'package:flutter_pokedex/views/home/viewmodel/home_view_model.dart';
+import 'package:flutter_pokedex/presentation/home/viewmodel/home_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeView extends StatefulWidget {
@@ -49,7 +49,7 @@ class _HomeViewState extends State<HomeView> {
                                   valueListenable: vm.quantityPokemonsCaught,
                                   builder: (context, caught, _) {
                                     return Text(
-                                      '$caught / ${vm.qunatityPokemons}',
+                                      '$caught / ${vm.quantityPokemons}',
                                       style: const TextStyle(fontSize: 16),
                                     );
                                   },

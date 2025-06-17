@@ -5,30 +5,31 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HomeViewModel extends ChangeNotifier {
-  int _qunatityPokemons = 0;
+  int _quantityPokemons = 0;
   final ValueNotifier<int> quantityPokemonsCaught = ValueNotifier<int>(0);
 
   bool _isLoading = true;
-
   final List<PokemonModel> _listPokemons = [];
-
-  List<PokemonModel> get listPokemons => _listPokemons;
 
   PokemonModel? pokemonSelected;
 
-  int get qunatityPokemons => _qunatityPokemons;
-
+  List<PokemonModel> get listPokemons => _listPokemons;
+  int get quantityPokemons => _quantityPokemons;
   bool get isLoading => _isLoading;
 
   Future<void> init() async {
-    _isLoading = true;
-    await _getQuantityPokemons();
-    await _getAllPokemons();
-    _isLoading = false;
+    _setLoading(true);
+    await _fetchQuantityPokemons();
+    await _fetchAllPokemons();
+    _setLoading(false);
+  }
+
+  void _setLoading(bool value) {
+    _isLoading = value;
     notifyListeners();
   }
 
-  Future<void> _getQuantityPokemons() async {
+  Future<void> _fetchQuantityPokemons() async {
     final url = Uri.parse(EnpointsConstants.pokemonsSpeciesCount);
 
     try {
@@ -36,46 +37,44 @@ class HomeViewModel extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        _qunatityPokemons = data['count'];
-        debugPrint('Quantidade de Pokémons: $_qunatityPokemons');
+        _quantityPokemons = data['count'] ?? 0;
+        debugPrint('Quantidade de Pokémons: $_quantityPokemons');
       } else {
-        debugPrint('Falha na requisição. Status code: ${response.statusCode}');
+        debugPrint(
+          'Falha ao buscar quantidade de Pokémons. Status code: ${response.statusCode}',
+        );
       }
     } catch (e) {
-      debugPrint('Erro ao buscar dados: $e');
-    } finally {
-      notifyListeners();
+      debugPrint('Erro ao buscar quantidade de Pokémons: $e');
     }
   }
 
-  Future<void> _getAllPokemons() async {
+  Future<void> _fetchAllPokemons() async {
     _listPokemons.clear();
-
     const int batchSize = 100;
 
-    for (int i = 1; i <= _qunatityPokemons; i += batchSize) {
+    for (int i = 1; i <= _quantityPokemons; i += batchSize) {
       final List<Future<PokemonModel?>> batchFutures = [];
 
-      for (int j = i; j < i + batchSize && j <= _qunatityPokemons; j++) {
-        batchFutures.add(_getPokemonById(j));
+      for (int j = i; j < i + batchSize && j <= _quantityPokemons; j++) {
+        batchFutures.add(_fetchPokemonById(j));
       }
 
-      final List<PokemonModel?> batchResults = await Future.wait(batchFutures);
-
-      int pokemonsAdicionados = 0;
+      final batchResults = await Future.wait(batchFutures);
+      int pokemonsAdded = 0;
 
       for (var pokemon in batchResults) {
         if (pokemon != null) {
           _listPokemons.add(pokemon);
-          pokemonsAdicionados++;
+          pokemonsAdded++;
         }
       }
 
-      quantityPokemonsCaught.value += pokemonsAdicionados;
+      quantityPokemonsCaught.value += pokemonsAdded;
     }
   }
 
-  Future<PokemonModel?> _getPokemonById(int id) async {
+  Future<PokemonModel?> _fetchPokemonById(int id) async {
     final url = Uri.parse(EnpointsConstants.pokemonDetails(id));
 
     try {
@@ -86,19 +85,18 @@ class HomeViewModel extends ChangeNotifier {
         return PokemonModel.fromJson(data);
       } else {
         debugPrint(
-          'Falha ao buscar Pokémon $id. Status code: ${response.statusCode}',
+          'Falha ao buscar Pokémon com ID $id. Status code: ${response.statusCode}',
         );
-        return null;
       }
     } catch (e) {
-      debugPrint('Erro ao buscar Pokémon $id: $e');
-      return null;
+      debugPrint('Erro ao buscar Pokémon com ID $id: $e');
     }
+    return null;
   }
 
   void setSelectedPokemon(BuildContext context, PokemonModel pokemon) {
     pokemonSelected = pokemon;
-    print('Pokemon selecionado: ${pokemon.name}');
+    debugPrint('Pokémon selecionado: ${pokemon.name}');
     notifyListeners();
   }
 }
