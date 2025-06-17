@@ -11,7 +11,7 @@ class SearchBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = AppTypography().body1.copyWith(
+    final textStyle = AppTypography().body3.copyWith(
       color: AppColors.grayScaleMedium,
     );
 
