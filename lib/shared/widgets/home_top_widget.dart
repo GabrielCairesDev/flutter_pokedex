@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/config/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
 import 'package:flutter_pokedex/core/constants/app_assets.dart';
+import 'package:flutter_pokedex/shared/widgets/hash_tag_button_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/search_bar_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -32,6 +33,7 @@ class HomeTopWidget extends StatelessWidget {
             children: [
               Expanded(child: SearchBarWidget()),
               SizedBox(width: 16.w),
+              HashTagButtonWidget(),
             ],
           ),
         ],
