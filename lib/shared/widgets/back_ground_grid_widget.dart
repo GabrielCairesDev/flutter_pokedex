@@ -16,11 +16,14 @@ class BackGroundGridWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.r),
           color: AppColors.grayScaleWhite,
         ),
-        child: Column(
-          children: [
-            SizedBox(height: 24.h),
-            child,
-          ],
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.sp),
+          child: Column(
+            children: [
+              SizedBox(height: 24.h),
+              child,
+            ],
+          ),
         ),
       ),
     );
