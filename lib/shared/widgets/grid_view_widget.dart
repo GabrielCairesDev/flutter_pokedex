@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/config/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
-import 'package:flutter_pokedex/models.dart/pokemon_model.dart';
+import 'package:flutter_pokedex/models/pokemon_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GridViewWidget extends StatelessWidget {

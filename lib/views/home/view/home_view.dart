@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/config/app_colors.dart';
-import 'package:flutter_pokedex/models.dart/pokemon_model.dart';
+import 'package:flutter_pokedex/models/pokemon_model.dart';
 import 'package:flutter_pokedex/shared/widgets/back_ground_grid_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/grid_view_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/home_top_widget.dart';

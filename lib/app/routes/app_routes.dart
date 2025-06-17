@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/views/home/home_view.dart';
+import 'package:flutter_pokedex/views/home/view/home_view.dart';
 
 class AppRoutes {
   static const String home = '/home';
