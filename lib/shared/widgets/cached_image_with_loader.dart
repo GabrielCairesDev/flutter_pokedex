@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/shared/widgets/circular_progress_indicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CachedImageWithLoader extends StatelessWidget {
@@ -29,7 +30,7 @@ class CachedImageWithLoader extends StatelessWidget {
           child: SizedBox(
             width: 24.w,
             height: 24.w,
-            child: const CircularProgressIndicator(strokeWidth: 2),
+            child: CircularProgressIndicatorWidget(),
           ),
         ),
         errorWidget: (context, url, error) => Container(color: errorColor),
