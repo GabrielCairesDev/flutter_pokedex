@@ -57,7 +57,11 @@ class _HomeViewState extends State<HomeView> {
                               ],
                             ),
                           )
-                        : GridViewWidget(listPokemons: vm.listPokemons),
+                        : GridViewWidget(
+                            listPokemons: vm.listPokemons,
+                            onTap: (pokemon) =>
+                                vm.setSelectedPokemon(context, pokemon),
+                          ),
                   ),
                 ),
               ],

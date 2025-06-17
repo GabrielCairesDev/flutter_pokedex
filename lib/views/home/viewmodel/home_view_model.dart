@@ -95,4 +95,10 @@ class HomeViewModel extends ChangeNotifier {
       return null;
     }
   }
+
+  void setSelectedPokemon(BuildContext context, PokemonModel pokemon) {
+    pokemonSelected = pokemon;
+    print('Pokemon selecionado: ${pokemon.name}');
+    notifyListeners();
+  }
 }

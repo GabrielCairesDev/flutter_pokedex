@@ -4,9 +4,14 @@ import 'package:flutter_pokedex/shared/widgets/grid_item_pokemon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GridViewWidget extends StatelessWidget {
-  const GridViewWidget({super.key, required this.listPokemons});
+  const GridViewWidget({
+    super.key,
+    required this.listPokemons,
+    required this.onTap,
+  });
 
   final List<PokemonModel> listPokemons;
+  final Function(PokemonModel) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,10 @@ class GridViewWidget extends StatelessWidget {
           childAspectRatio: 104.w / 108.h,
           clipBehavior: Clip.none,
           children: List.generate(listPokemons.length, (index) {
-            return GridItemPokemon(pokemon: listPokemons[index]);
+            return InkWell(
+              onTap: () => onTap(listPokemons[index]),
+              child: GridItemPokemon(pokemon: listPokemons[index]),
+            );
           }),
         ),
       ),
