@@ -15,7 +15,7 @@ class CachedImageWithLoader extends StatelessWidget {
     required this.imageUrl,
     required this.width,
     required this.height,
-    this.fit = BoxFit.cover,
+    this.fit = BoxFit.contain,
     this.errorColor = Colors.blue,
   });
 
@@ -30,6 +30,7 @@ class CachedImageWithLoader extends StatelessWidget {
           child: SizedBox(
             width: 24.w,
             height: 24.w,
+
             child: CircularProgressIndicatorWidget(),
           ),
         ),
