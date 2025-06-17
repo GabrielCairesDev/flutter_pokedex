@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/config/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
 import 'package:flutter_pokedex/models/pokemon_model.dart';
+import 'package:flutter_pokedex/shared/widgets/cached_image_with_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GridItemPokemon extends StatelessWidget {
@@ -56,11 +57,16 @@ class GridItemPokemon extends StatelessWidget {
                     height: 72.h,
                     width: 72.w,
                     child: pokemon.imageUrl.isNotEmpty
-                        ? Image.network(pokemon.imageUrl)
+                        ? CachedImageWithLoader(
+                            imageUrl: pokemon.imageUrl,
+                            width: 72.w,
+                            height: 72.h,
+                          )
                         : Container(color: Colors.blue),
                   ),
                   Text(
-                    pokemon.name,
+                    pokemon.name.substring(0, 1).toUpperCase() +
+                        pokemon.name.substring(1),
                     style: AppTypography().body3.copyWith(
                       color: AppColors.grayScaleDark,
                     ),
