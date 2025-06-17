@@ -9,23 +9,13 @@ class BackGroundGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.r),
-          color: AppColors.grayScaleWhite,
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.sp),
-          child: Column(
-            children: [
-              SizedBox(height: 24.h),
-              child,
-            ],
-          ),
-        ),
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.r),
+        color: AppColors.grayScaleWhite,
       ),
+      child: child,
     );
   }
 }
