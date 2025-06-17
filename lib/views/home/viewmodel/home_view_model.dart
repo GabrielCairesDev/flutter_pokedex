@@ -8,14 +8,14 @@ class HomeViewModel extends ChangeNotifier {
   int _qunatityPokemons = 0;
   int _qunatityPokemonsCaught = 0;
 
-  bool _isLoading = false;
+  bool _isLoading = true;
 
   final List<PokemonModel> _listPokemons = [];
 
   int get qunatityPokemons => _qunatityPokemons;
   int get qunatityPokemonsCaught => _qunatityPokemonsCaught;
 
-  bool get isLoadingPokemons => _isLoading;
+  bool get isLoading => _isLoading;
 
   List<PokemonModel> get listPokemons => _listPokemons;
 
@@ -41,25 +41,36 @@ class HomeViewModel extends ChangeNotifier {
       }
     } catch (e) {
       debugPrint('Erro ao buscar dados: $e');
+    } finally {
+      notifyListeners();
     }
   }
 
   Future<void> _getAllPokemons() async {
     _listPokemons.clear();
 
-    for (int i = 1; i <= _qunatityPokemons; i++) {
-      final pokemon = await _getPokemonById(i);
+    const int batchSize = 100;
 
-      if (pokemon != null) {
-        _listPokemons.add(pokemon);
+    for (int i = 1; i <= _qunatityPokemons; i += batchSize) {
+      final List<Future<PokemonModel?>> batchFutures = [];
 
-        _qunatityPokemonsCaught++;
-
-        debugPrint('$i Pokémon adicionado: ${pokemon.name}');
+      for (int j = i; j < i + batchSize && j <= _qunatityPokemons; j++) {
+        batchFutures.add(_getPokemonById(j));
       }
-    }
 
-    notifyListeners();
+      final List<PokemonModel?> batchResults = await Future.wait(batchFutures);
+
+      for (var pokemon in batchResults) {
+        if (pokemon != null) {
+          _listPokemons.add(pokemon);
+          _qunatityPokemonsCaught++;
+          debugPrint('${pokemon.id} Pokémon ${pokemon.name} adicionado');
+        }
+      }
+
+      notifyListeners();
+      debugPrint(' até Pokémon ${i + batchSize - 1} concluído');
+    }
   }
 
   Future<PokemonModel?> _getPokemonById(int id) async {
@@ -80,6 +91,8 @@ class HomeViewModel extends ChangeNotifier {
     } catch (e) {
       debugPrint('Erro ao buscar Pokémon $id: $e');
       return null;
+    } finally {
+      notifyListeners();
     }
   }
 }
