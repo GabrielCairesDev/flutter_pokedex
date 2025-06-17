@@ -12,11 +12,13 @@ class HomeViewModel extends ChangeNotifier {
 
   final List<PokemonModel> _listPokemons = [];
 
+  List<PokemonModel> get listPokemons => _listPokemons;
+
+  PokemonModel? pokemonSelected;
+
   int get qunatityPokemons => _qunatityPokemons;
 
   bool get isLoading => _isLoading;
-
-  List<PokemonModel> get listPokemons => _listPokemons;
 
   Future<void> init() async {
     _isLoading = true;

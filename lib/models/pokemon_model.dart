@@ -28,11 +28,14 @@ class PokemonModel {
     required this.sdef,
     required this.spd,
   });
+
   factory PokemonModel.fromJson(Map<String, dynamic> json) {
+    final id = json['id'] ?? 0;
     return PokemonModel(
-      id: json['id'] ?? 0,
+      id: id,
       name: json['name'] ?? '',
-      imageUrl: json['sprites']?['front_default'] ?? '',
+      imageUrl:
+          'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png',
       tipos: (json['types'] != null)
           ? List<String>.from(
               (json['types'] as List).map(
