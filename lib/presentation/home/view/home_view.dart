@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/config/app_colors.dart';
+import 'package:flutter_pokedex/app/routes/app_routes.dart';
 import 'package:flutter_pokedex/shared/widgets/back_ground_grid_widget.dart';
+import 'package:flutter_pokedex/shared/widgets/circular_progress_indicator.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_grid_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/home_top_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/scaffold_widget.dart';
@@ -45,28 +47,13 @@ class _HomeViewState extends State<HomeView> {
                 Expanded(
                   child: BackGroundGridWidget(
                     child: vm.isLoading
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text('Carregando...'),
-                                ValueListenableBuilder<int>(
-                                  valueListenable: vm.quantityPokemonsCaught,
-                                  builder: (context, caught, _) {
-                                    return Text(
-                                      '$caught / ${vm.quantityPokemons}',
-                                      style: const TextStyle(fontSize: 16),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          )
+                        ? Center(child: CircularProgressIndicatorWidget())
                         : PokemonGridWidget(
                             listPokemons: vm.listPokemons,
-                            onTap: (pokemon) =>
-                                vm.setSelectedPokemon(context, pokemon),
+                            onTap: (pokemon) {
+                              vm.selectPokemon(pokemon);
+                              Navigator.pushNamed(context, AppRoutes.pokemon);
+                            },
                           ),
                   ),
                 ),

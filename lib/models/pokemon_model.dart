@@ -15,6 +15,7 @@ class PokemonModel {
   final int satk;
   final int sdef;
   final int spd;
+  final String description;
 
   PokemonModel({
     required this.id,
@@ -30,11 +31,13 @@ class PokemonModel {
     required this.satk,
     required this.sdef,
     required this.spd,
+    required this.description,
   });
 
   factory PokemonModel.fromJson(
     Map<String, dynamic> json, {
     List<String>? initialMoves,
+    String description = '',
   }) {
     final id = json['id'] ?? 0;
     return PokemonModel(
@@ -70,12 +73,26 @@ class PokemonModel {
                 .toList()
           : <String>[],
 
-      hp: json['stats'] != null ? (json['stats'][0]['base_stat'] ?? 0) : 0,
-      atk: json['stats'] != null ? (json['stats'][1]['base_stat'] ?? 0) : 0,
-      def: json['stats'] != null ? (json['stats'][2]['base_stat'] ?? 0) : 0,
-      satk: json['stats'] != null ? (json['stats'][3]['base_stat'] ?? 0) : 0,
-      sdef: json['stats'] != null ? (json['stats'][4]['base_stat'] ?? 0) : 0,
-      spd: json['stats'] != null ? (json['stats'][5]['base_stat'] ?? 0) : 0,
+      hp: (json['stats'] != null && json['stats'].length > 0)
+          ? (json['stats'][0]['base_stat'] ?? 0)
+          : 0,
+      atk: (json['stats'] != null && json['stats'].length > 1)
+          ? (json['stats'][1]['base_stat'] ?? 0)
+          : 0,
+      def: (json['stats'] != null && json['stats'].length > 2)
+          ? (json['stats'][2]['base_stat'] ?? 0)
+          : 0,
+      satk: (json['stats'] != null && json['stats'].length > 3)
+          ? (json['stats'][3]['base_stat'] ?? 0)
+          : 0,
+      sdef: (json['stats'] != null && json['stats'].length > 4)
+          ? (json['stats'][4]['base_stat'] ?? 0)
+          : 0,
+      spd: (json['stats'] != null && json['stats'].length > 5)
+          ? (json['stats'][5]['base_stat'] ?? 0)
+          : 0,
+
+      description: description,
     );
   }
 
@@ -84,7 +101,7 @@ class PokemonModel {
       'id': id,
       'name': name,
       'imageUrl': imageUrl,
-      'tipos': types,
+      'types': types,
       'weight': weight,
       'height': height,
       'moves': moves,
@@ -94,7 +111,27 @@ class PokemonModel {
       'satk': satk,
       'sdef': sdef,
       'spd': spd,
+      'description': description,
     };
+  }
+
+  PokemonModel copyWith({String? description}) {
+    return PokemonModel(
+      id: id,
+      name: name,
+      imageUrl: imageUrl,
+      types: types,
+      weight: weight,
+      height: height,
+      moves: moves,
+      hp: hp,
+      atk: atk,
+      def: def,
+      satk: satk,
+      sdef: sdef,
+      spd: spd,
+      description: description ?? this.description,
+    );
   }
 
   Color get color {

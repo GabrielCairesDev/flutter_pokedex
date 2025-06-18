@@ -1,18 +1,17 @@
+import 'dart:collection';
+import 'dart:convert';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/core/constants/enpoints_constants.dart';
-import 'package:flutter_pokedex/app/routes/app_routes.dart';
 import 'package:flutter_pokedex/models/pokemon_model.dart';
 import 'package:get_it/get_it.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class HomeViewModel extends ChangeNotifier {
   int _quantityPokemons = 0;
   final ValueNotifier<int> quantityPokemonsCaught = ValueNotifier<int>(0);
-
   bool _isLoading = true;
   final List<PokemonModel> _listPokemons = [];
-
   PokemonModel? pokemonSelected;
 
   List<PokemonModel> get listPokemons => _listPokemons;
@@ -23,7 +22,7 @@ class HomeViewModel extends ChangeNotifier {
     _registerInGetIt();
     _setLoading(true);
     await _fetchQuantityPokemons();
-    await _fetchAllPokemons();
+    await _fetchAllPokemonsWithConcurrencyLimit();
     _setLoading(false);
   }
 
@@ -52,84 +51,97 @@ class HomeViewModel extends ChangeNotifier {
 
   Future<void> _fetchQuantityPokemons() async {
     final url = Uri.parse(EnpointsConstants.pokemonsSpeciesCount);
-
     try {
-      final response = await http.get(url);
-
+      final response = await http.get(url).timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         _quantityPokemons = data['count'] ?? 0;
-      } else {
-        debugPrint(
-          'Falha ao buscar quantidade de Pokémons. Status code: ${response.statusCode}',
-        );
       }
     } catch (e) {
       debugPrint('Erro ao buscar quantidade de Pokémons: $e');
     }
   }
 
-  Future<void> _fetchAllPokemons() async {
+  Future<void> _fetchAllPokemonsWithConcurrencyLimit() async {
     _listPokemons.clear();
-    const int batchSize = 100;
+    const int maxConcurrent = 10; // Limitar a 10 requisições simultâneas
+    final ids = List.generate(_quantityPokemons, (index) => index + 1);
+    final queue = Queue<int>.from(ids);
+    int caught = 0;
 
-    for (int i = 1; i <= _quantityPokemons; i += batchSize) {
-      final List<Future<PokemonModel?>> batchFutures = [];
-
-      for (int j = i; j < i + batchSize && j <= _quantityPokemons; j++) {
-        batchFutures.add(_fetchPokemonById(j));
-      }
-
-      final batchResults = await Future.wait(batchFutures);
-      int pokemonsAdded = 0;
-
-      for (var pokemon in batchResults) {
+    Future<void> worker() async {
+      while (queue.isNotEmpty) {
+        final id = queue.removeFirst();
+        final pokemon = await _fetchPokemonById(id);
         if (pokemon != null) {
           _listPokemons.add(pokemon);
-          pokemonsAdded++;
+          caught++;
         }
       }
-
-      quantityPokemonsCaught.value += pokemonsAdded;
     }
+
+    final futures = List.generate(maxConcurrent, (_) => worker());
+    await Future.wait(futures);
+
+    quantityPokemonsCaught.value = caught;
   }
 
   Future<PokemonModel?> _fetchPokemonById(int id) async {
     final url = Uri.parse(EnpointsConstants.pokemonDetails(id));
 
     try {
-      final response = await http.get(url);
-
+      final response = await http.get(url).timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-
         final List<String> initialMoves = [];
 
         for (var move in data['moves']) {
           for (var detail in move['version_group_details']) {
             final learnMethod = detail['move_learn_method']['name'];
             final levelLearnedAt = detail['level_learned_at'];
-
             if (learnMethod == 'level-up' && levelLearnedAt == 1) {
               initialMoves.add(move['move']['name']);
             }
           }
         }
 
-        return PokemonModel.fromJson(data, initialMoves: initialMoves);
-      } else {
-        debugPrint(
-          'Falha ao buscar Pokémon com ID $id. Status code: ${response.statusCode}',
-        );
+        final description = await _fetchPokemonDescription(id);
+        return PokemonModel.fromJson(
+          data,
+          initialMoves: initialMoves,
+        ).copyWith(description: description);
       }
     } catch (e) {
-      debugPrint('Erro ao buscar Pokémon com ID $id: $e');
+      debugPrint('Erro ao buscar Pokémon ID $id: $e');
     }
     return null;
   }
 
-  void setSelectedPokemon(BuildContext context, PokemonModel pokemon) {
+  Future<String> _fetchPokemonDescription(int id) async {
+    final url = Uri.parse(EnpointsConstants.pokemonSpecies(id));
+
+    try {
+      final response = await http.get(url).timeout(const Duration(seconds: 10));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final flavorEntries = data['flavor_text_entries'] as List;
+        for (var entry in flavorEntries) {
+          if (entry['language']['name'] == 'en') {
+            return (entry['flavor_text'] as String)
+                .replaceAll('\n', ' ')
+                .replaceAll('\f', ' ');
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Erro ao buscar descrição do Pokémon ID $id: $e');
+    }
+
+    return '';
+  }
+
+  void selectPokemon(PokemonModel pokemon) {
     pokemonSelected = pokemon;
-    Navigator.pushNamed(context, AppRoutes.pokemon);
+    notifyListeners();
   }
 }
