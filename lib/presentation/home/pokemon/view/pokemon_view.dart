@@ -7,6 +7,7 @@ import 'package:flutter_pokedex/shared/widgets/app_bar_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/big_pokeball_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/cached_image_with_loader.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_body_widget.dart';
+import 'package:flutter_pokedex/shared/widgets/pokemon_stats_numb_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_stats_text_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/white_back_ground_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_type_widget.dart';
@@ -92,6 +93,16 @@ class _PokemonViewState extends State<PokemonView> {
                                         ),
                                         SizedBox(width: 8.w),
                                         VerticalDivider(),
+                                        SizedBox(width: 8.w),
+                                        PokemonStatsNumbWidget(
+                                          hp: vm.pokemonSelected.hpString,
+                                          atk: vm.pokemonSelected.atkString,
+                                          def: vm.pokemonSelected.defString,
+                                          satk: vm.pokemonSelected.satkString,
+                                          sdef: vm.pokemonSelected.sdefString,
+                                          spd: vm.pokemonSelected.spdString,
+                                        ),
+                                        SizedBox(width: 8.w),
                                       ],
                                     ),
                                   ),
