@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/app/config/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
 import 'package:flutter_pokedex/core/constants/pokemon_type_color.dart';
 import 'package:flutter_pokedex/presentation/home/pokemon/viewModel/pokemon_view_model.dart';
@@ -6,6 +7,7 @@ import 'package:flutter_pokedex/shared/widgets/app_bar_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/big_pokeball_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/cached_image_with_loader.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_body_widget.dart';
+import 'package:flutter_pokedex/shared/widgets/pokemon_stats_text_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/white_back_ground_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_type_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/scaffold_widget.dart';
@@ -47,7 +49,7 @@ class _PokemonViewState extends State<PokemonView> {
                             ),
                             SizedBox(height: 8.h),
                             PokemonTypeWidget(types: vm.pokemonSelected.types),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: 8.h),
                             Text(
                               'About',
                               style: AppTypography().subtitle1.copyWith(
@@ -56,8 +58,48 @@ class _PokemonViewState extends State<PokemonView> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 16.h),
+                            SizedBox(height: 8.h),
                             PokemonBodyWidget(pokemon: vm.pokemonSelected),
+                            Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 24.w),
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 32.h),
+                                  Text(
+                                    vm.pokemonSelected.description,
+                                    style: AppTypography().body1.copyWith(
+                                      color: AppColors.grayScaleDark,
+                                    ),
+                                  ),
+                                  SizedBox(height: 32.h),
+                                  Text(
+                                    'Base Stats',
+                                    style: AppTypography().subtitle1.copyWith(
+                                      color: PokemonTypeColor.getColor(
+                                        vm.pokemonSelected.types[0],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 32.h),
+                                  SizedBox(
+                                    height: 96.h,
+                                    child: Row(
+                                      children: [
+                                        PokemonStatsTextWidget(
+                                          color: PokemonTypeColor.getColor(
+                                            vm.pokemonSelected.types[0],
+                                          ),
+                                        ),
+                                        SizedBox(width: 8.w),
+                                        VerticalDivider(),
+                                      ],
+                                    ),
+                                  ),
+
+                                  SizedBox(height: 24.h),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ],
