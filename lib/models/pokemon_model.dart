@@ -86,7 +86,7 @@ class PokemonModel {
     };
   }
 
-  Color get primaryTypeColor {
+  Color get color {
     if (tipos.isNotEmpty) {
       return PokemonTypeColor.getColor(tipos.first);
     }
