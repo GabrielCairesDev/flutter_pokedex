@@ -13,26 +13,27 @@ class PokemonTypeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: types
-          .map(
-            (type) => Padding(
-              padding: EdgeInsets.only(right: 16.w),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
-                decoration: BoxDecoration(
-                  color: PokemonTypeColor.getColor(type),
-                  borderRadius: BorderRadius.circular(10.r),
-                ),
-                child: Text(
-                  type,
-                  style: AppTypography().subtitle3.copyWith(
-                    color: AppColors.grayScaleWhite,
-                  ),
-                ),
+      children: types.asMap().entries.map((entry) {
+        final index = entry.key;
+        final type = entry.value;
+
+        return Padding(
+          padding: EdgeInsets.only(right: index != types.length - 1 ? 16.w : 0),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+            decoration: BoxDecoration(
+              color: PokemonTypeColor.getColor(type),
+              borderRadius: BorderRadius.circular(10.r),
+            ),
+            child: Text(
+              type,
+              style: AppTypography().subtitle3.copyWith(
+                color: AppColors.grayScaleWhite,
               ),
             ),
-          )
-          .toList(),
+          ),
+        );
+      }).toList(),
     );
   }
 }
