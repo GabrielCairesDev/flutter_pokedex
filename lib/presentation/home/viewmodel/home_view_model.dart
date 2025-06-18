@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/constants/enpoints_constants.dart';
 import 'package:flutter_pokedex/models/pokemon_model.dart';
+import 'package:get_it/get_it.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -18,10 +19,29 @@ class HomeViewModel extends ChangeNotifier {
   bool get isLoading => _isLoading;
 
   Future<void> init() async {
+    _registerInGetIt();
     _setLoading(true);
     await _fetchQuantityPokemons();
     await _fetchAllPokemons();
     _setLoading(false);
+  }
+
+  @override
+  void dispose() {
+    _unregisterFromGetIt();
+    super.dispose();
+  }
+
+  void _registerInGetIt() {
+    if (!GetIt.I.isRegistered<HomeViewModel>()) {
+      GetIt.I.registerSingleton<HomeViewModel>(this);
+    }
+  }
+
+  void _unregisterFromGetIt() {
+    if (GetIt.I.isRegistered<HomeViewModel>()) {
+      GetIt.I.unregister<HomeViewModel>();
+    }
   }
 
   void _setLoading(bool value) {
@@ -38,7 +58,6 @@ class HomeViewModel extends ChangeNotifier {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         _quantityPokemons = data['count'] ?? 0;
-        debugPrint('Quantidade de Pokémons: $_quantityPokemons');
       } else {
         debugPrint(
           'Falha ao buscar quantidade de Pokémons. Status code: ${response.statusCode}',
