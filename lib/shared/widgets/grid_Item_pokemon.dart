@@ -65,8 +65,7 @@ class GridItemPokemon extends StatelessWidget {
                         : Container(color: Colors.blue),
                   ),
                   Text(
-                    pokemon.name.substring(0, 1).toUpperCase() +
-                        pokemon.name.substring(1),
+                    pokemon.name,
                     style: AppTypography().body3.copyWith(
                       color: AppColors.grayScaleDark,
                     ),
