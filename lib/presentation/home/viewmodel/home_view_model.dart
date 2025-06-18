@@ -14,7 +14,9 @@ class HomeViewModel extends ChangeNotifier {
   final List<PokemonModel> _listPokemons = [];
   PokemonModel? pokemonSelected;
 
-  List<PokemonModel> get listPokemons => _listPokemons;
+  List<PokemonModel> get listPokemons =>
+      _listPokemons..sort((a, b) => a.id.compareTo(b.id));
+
   int get quantityPokemons => _quantityPokemons;
   bool get isLoading => _isLoading;
 
@@ -64,7 +66,7 @@ class HomeViewModel extends ChangeNotifier {
 
   Future<void> _fetchAllPokemonsWithConcurrencyLimit() async {
     _listPokemons.clear();
-    const int maxConcurrent = 10; // Limitar a 10 requisições simultâneas
+    const int maxConcurrent = 10; 
     final ids = List.generate(_quantityPokemons, (index) => index + 1);
     final queue = Queue<int>.from(ids);
     int caught = 0;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/presentation/home/pokemon/view/pokemon_view.dart';
+import 'package:flutter_pokedex/presentation/pokemon/view/pokemon_view.dart';
 import 'package:flutter_pokedex/presentation/home/view/home_view.dart';
 
 class AppRoutes {

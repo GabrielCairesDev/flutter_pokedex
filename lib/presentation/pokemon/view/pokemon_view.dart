@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/config/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
 import 'package:flutter_pokedex/core/constants/pokemon_type_color.dart';
-import 'package:flutter_pokedex/presentation/home/pokemon/viewModel/pokemon_view_model.dart';
+import 'package:flutter_pokedex/presentation/pokemon/viewModel/pokemon_view_model.dart';
 import 'package:flutter_pokedex/shared/widgets/app_bar_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/big_pokeball_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/cached_image_with_loader.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_body_widget.dart';
+import 'package:flutter_pokedex/shared/widgets/pokemon_stats_line_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_stats_numb_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_stats_text_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/white_back_ground_widget.dart';
@@ -103,6 +104,17 @@ class _PokemonViewState extends State<PokemonView> {
                                           spd: vm.pokemonSelected.spdString,
                                         ),
                                         SizedBox(width: 8.w),
+                                        PokemonStatsLineWidget(
+                                          hp: vm.pokemonSelected.hp,
+                                          atk: vm.pokemonSelected.atk,
+                                          def: vm.pokemonSelected.def,
+                                          satk: vm.pokemonSelected.satk,
+                                          sdef: vm.pokemonSelected.sdef,
+                                          spd: vm.pokemonSelected.spd,
+                                          color: PokemonTypeColor.getColor(
+                                            vm.pokemonSelected.types[0],
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),

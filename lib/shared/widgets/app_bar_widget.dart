@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/config/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
 import 'package:flutter_pokedex/core/constants/app_assets.dart';
-import 'package:flutter_pokedex/presentation/home/pokemon/view/pokemon_view.dart';
+import 'package:flutter_pokedex/presentation/pokemon/view/pokemon_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
