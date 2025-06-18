@@ -26,15 +26,18 @@ class CachedImageWithLoader extends StatelessWidget {
       height: height,
       child: CachedNetworkImage(
         imageUrl: imageUrl,
-        placeholder: (context, url) => Center(
-          child: SizedBox(
-            width: 24.w,
-            height: 24.w,
-
-            child: CircularProgressIndicatorWidget(),
-          ),
-        ),
-        errorWidget: (context, url, error) => Container(color: errorColor),
+        placeholder: (context, url) {
+          return Center(
+            child: SizedBox(
+              width: 24.w,
+              height: 24.w,
+              child: CircularProgressIndicatorWidget(),
+            ),
+          );
+        },
+        errorWidget: (context, url, error) {
+          return Container(color: errorColor);
+        },
         fit: fit,
       ),
     );
