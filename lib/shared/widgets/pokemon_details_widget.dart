@@ -33,7 +33,7 @@ class PokemonDetailsWidget extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16.h),
-            PokemonBodyWidget(),
+            PokemonBodyWidget(pokemon: pokemon),
           ],
         ),
       ),
