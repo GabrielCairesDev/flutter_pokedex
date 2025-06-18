@@ -27,13 +27,11 @@ class PokemonStatsLineWidget extends StatelessWidget {
     final maxStats = 255;
     final double maxWidth = 210.w;
 
-    /// Função para calcular o tamanho proporcional da barra
     double calculateWidth(int stat) {
       final percentage = stat / maxStats;
       return maxWidth * percentage;
     }
 
-    /// Lista de stats
     final stats = [hp, atk, def, satk, sdef, spd];
 
     return SizedBox(
@@ -44,7 +42,6 @@ class PokemonStatsLineWidget extends StatelessWidget {
         children: stats.map((stat) {
           return Stack(
             children: [
-              /// Linha de fundo (background da barra)
               Container(
                 width: maxWidth,
                 height: 5.h,
@@ -54,7 +51,6 @@ class PokemonStatsLineWidget extends StatelessWidget {
                 ),
               ),
 
-              /// Linha da stat (proporcional)
               Container(
                 width: calculateWidth(stat),
                 height: 5.h,

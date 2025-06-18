@@ -15,7 +15,7 @@ class PokemonCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      clipBehavior: Clip.hardEdge, // Faz o clipping
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),
         color: PokemonTypeColor.getColor(pokemon.types[0]).o(60),
