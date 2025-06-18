@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/presentation/home/view/home_view.dart';
+import 'package:flutter_pokedex/app/routes/app_routes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppConfig extends StatelessWidget {
@@ -12,7 +12,11 @@ class AppConfig extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, __) {
-        return MaterialApp(title: 'Pokedex PokeApi', home: HomeView());
+        return MaterialApp(
+          title: 'Pokedex PokeApi',
+          initialRoute: AppRoutes.home,
+          routes: AppRoutes.routes,
+        );
       },
     );
   }
