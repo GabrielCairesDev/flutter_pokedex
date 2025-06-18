@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/core/constants/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
 import 'package:flutter_pokedex/core/constants/pokemon_type_color.dart';
+import 'package:flutter_pokedex/core/extensions/color_opacity_extension.dart';
 import 'package:flutter_pokedex/data/models/pokemon_model.dart';
 import 'package:flutter_pokedex/shared/widgets/cached_image_with_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,10 +18,10 @@ class PokemonCardWidget extends StatelessWidget {
       clipBehavior: Clip.hardEdge, // Faz o clipping
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),
-        color: PokemonTypeColor.getColor(pokemon.types[0]).withOpacity(0.6),
+        color: PokemonTypeColor.getColor(pokemon.types[0]).o(60),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.2),
+            color: Colors.black.o(20),
             offset: const Offset(0, 1),
             blurRadius: 1.5,
             spreadRadius: 1,

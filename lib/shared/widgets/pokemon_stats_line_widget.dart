@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/core/extensions/color_opacity_extension.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PokemonStatsLineWidget extends StatelessWidget {
@@ -48,7 +49,7 @@ class PokemonStatsLineWidget extends StatelessWidget {
                 width: maxWidth,
                 height: 5.h,
                 decoration: BoxDecoration(
-                  color: color.withOpacity(0.2),
+                  color: color.o(20),
                   borderRadius: BorderRadius.circular(2.r),
                 ),
               ),
