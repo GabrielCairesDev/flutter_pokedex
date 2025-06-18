@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   AppColors._();
-  // Cor da aplicação
   static const Color identityPrimary = Color(0xFFDC0A2D);
 
-  // Cor de tipo de pokemon
   static const Color pokemonTypeBug = Color(0xFFA7B723);
   static const Color pokemonTypeDark = Color(0xFF75574C);
   static const Color pokemonTypeDragon = Color(0xFF7037FF);
@@ -25,14 +23,12 @@ class AppColors {
   static const Color pokemonTypeSteel = Color(0xFFB7B9D0);
   static const Color pokemonTypeWater = Color(0xFF6493EB);
 
-  // Escala de cinza
   static const Color grayScaleDark = Color(0xFF212121);
   static const Color grayScaleMedium = Color(0xFF666666);
   static const Color grayScaleLight = Color(0xFFE0E0E0);
   static const Color grayScaleBackground = Color(0xFFEFEFEF);
   static const Color grayScaleWhite = Color(0xFFFFFFFF);
 
-  // Pegar a cor do tipo de pokemon
   static Color getColorByPokemonType(String type) {
     switch (type.toLowerCase()) {
       case 'bug':

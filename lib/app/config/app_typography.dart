@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTypography {
-  // Header
   TextStyle headline = TextStyle(
     fontSize: 24.sp,
     height: 24.h / 32.sp,
@@ -27,7 +26,6 @@ class AppTypography {
     fontWeight: FontWeight.bold,
   );
 
-  // Body
   TextStyle body1 = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.normal,

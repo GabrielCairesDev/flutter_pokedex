@@ -103,7 +103,6 @@ class HomeViewModel extends ChangeNotifier {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
-        // Filtrar apenas os moves de level-up no level 1
         final List<String> initialMoves = [];
 
         for (var move in data['moves']) {
@@ -117,7 +116,6 @@ class HomeViewModel extends ChangeNotifier {
           }
         }
 
-        // Exemplo: passando os moves filtrados para o model
         return PokemonModel.fromJson(data, initialMoves: initialMoves);
       } else {
         debugPrint(
