@@ -145,4 +145,11 @@ class PokemonModel {
     if (value.isEmpty) return value;
     return value[0].toUpperCase() + value.substring(1);
   }
+
+  String get hpString => hp.toString();
+  String get atkString => atk.toString();
+  String get defString => def.toString();
+  String get satkString => satk.toString();
+  String get sdefString => sdef.toString();
+  String get spdString => spd.toString();
 }
