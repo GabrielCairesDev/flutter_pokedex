@@ -38,7 +38,11 @@ class _PokemonViewState extends State<PokemonView> {
                         Column(
                           children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.w),
+                              padding: EdgeInsets.only(
+                                right: 10.w,
+                                left: 10.w,
+                                top: 8.h,
+                              ),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,

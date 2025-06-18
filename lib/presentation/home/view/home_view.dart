@@ -43,7 +43,10 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HomeTopWidget(),
+                HomeTopWidget(
+                  controller: vm.searchController,
+                  onChanged: (p0) => vm.searching(),
+                ),
                 Expanded(
                   child: BackGroundGridWidget(
                     child: vm.isLoading

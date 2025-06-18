@@ -7,11 +7,18 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SearchBarWidget extends StatelessWidget {
-  const SearchBarWidget({super.key});
+  const SearchBarWidget({
+    super.key,
+    required this.controller,
+    required this.onChanged,
+  });
+
+  final TextEditingController controller;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = AppTypography().body3.copyWith(
+    final textStyle = AppTypography().body1.copyWith(
       color: AppColors.grayScaleMedium,
     );
 
@@ -25,7 +32,9 @@ class SearchBarWidget extends StatelessWidget {
     return SizedBox(
       height: 32.h,
       child: TextFormField(
+        controller: controller,
         style: textStyle,
+        onChanged: onChanged,
         decoration: InputDecoration(
           hintText: 'Search',
           hintStyle: textStyle,

@@ -8,14 +8,28 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 class HomeViewModel extends ChangeNotifier {
-  int _quantityPokemons = 0;
-  final ValueNotifier<int> quantityPokemonsCaught = ValueNotifier<int>(0);
-  bool _isLoading = true;
   final List<PokemonModel> _listPokemons = [];
+  final searchController = TextEditingController();
+
+  int _quantityPokemons = 0;
+
+  bool _isLoading = true;
+
   PokemonModel? pokemonSelected;
 
-  List<PokemonModel> get listPokemons =>
-      _listPokemons..sort((a, b) => a.id.compareTo(b.id));
+  List<PokemonModel> get listPokemons {
+    final searchText = searchController.text.trim().toLowerCase();
+
+    if (searchText.isEmpty) {
+      return _listPokemons..sort((a, b) => a.id.compareTo(b.id));
+    }
+
+    return _listPokemons.where((pokemon) {
+      final nameMatches = pokemon.name.toLowerCase().contains(searchText);
+      final idMatches = pokemon.id.toString().contains(searchText);
+      return nameMatches || idMatches;
+    }).toList()..sort((a, b) => a.id.compareTo(b.id));
+  }
 
   int get quantityPokemons => _quantityPokemons;
   bool get isLoading => _isLoading;
@@ -79,7 +93,6 @@ class HomeViewModel extends ChangeNotifier {
     const int maxConcurrent = 100;
     final ids = List.generate(_quantityPokemons, (index) => index + 1);
     final queue = Queue<int>.from(ids);
-    int caught = 0;
 
     Future<void> worker() async {
       while (queue.isNotEmpty) {
@@ -87,15 +100,12 @@ class HomeViewModel extends ChangeNotifier {
         final pokemon = await _fetchPokemonById(id);
         if (pokemon != null) {
           _listPokemons.add(pokemon);
-          caught++;
         }
       }
     }
 
     final futures = List.generate(maxConcurrent, (_) => worker());
     await Future.wait(futures);
-
-    quantityPokemonsCaught.value = caught;
   }
 
   Future<PokemonModel?> _fetchPokemonById(int id) async {
@@ -148,7 +158,6 @@ class HomeViewModel extends ChangeNotifier {
     } catch (e) {
       debugPrint('Erro ao buscar descrição do Pokémon ID $id: $e');
     }
-
     return '';
   }
 
@@ -171,4 +180,6 @@ class HomeViewModel extends ChangeNotifier {
     pokemonSelected = listPokemons[previousIndex];
     notifyListeners();
   }
+
+  void searching() => notifyListeners();
 }

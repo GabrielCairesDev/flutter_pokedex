@@ -8,7 +8,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class HomeTopWidget extends StatelessWidget {
-  const HomeTopWidget({super.key});
+  const HomeTopWidget({
+    super.key,
+    required this.controller,
+    required this.onChanged,
+  });
+
+  final TextEditingController controller;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +38,12 @@ class HomeTopWidget extends StatelessWidget {
           SizedBox(height: 8.h),
           Row(
             children: [
-              Expanded(child: SearchBarWidget()),
+              Expanded(
+                child: SearchBarWidget(
+                  controller: controller,
+                  onChanged: onChanged,
+                ),
+              ),
               SizedBox(width: 16.w),
               HashTagButtonWidget(),
             ],
