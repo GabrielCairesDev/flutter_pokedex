@@ -32,7 +32,10 @@ class PokemonModel {
     required this.spd,
   });
 
-  factory PokemonModel.fromJson(Map<String, dynamic> json) {
+  factory PokemonModel.fromJson(
+    Map<String, dynamic> json, {
+    List<String>? initialMoves,
+  }) {
     final id = json['id'] ?? 0;
     return PokemonModel(
       id: id,
@@ -53,12 +56,20 @@ class PokemonModel {
           ? (json['height'] as num).toDouble()
           : 0.0,
       moves: (json['moves'] != null)
-          ? List<String>.from(
-              (json['moves'] as List).map(
-                (move) => move['move']['name'] as String,
-              ),
-            )
+          ? (json['moves'] as List)
+                .where((move) {
+                  return (move['version_group_details'] as List).any((detail) {
+                    return detail['move_learn_method']['name'] == 'level-up' &&
+                        detail['level_learned_at'] == 1;
+                  });
+                })
+                .map<String>(
+                  (move) => _capitalize(move['move']['name'] as String),
+                )
+                .toSet()
+                .toList()
           : <String>[],
+
       hp: json['stats'] != null ? (json['stats'][0]['base_stat'] ?? 0) : 0,
       atk: json['stats'] != null ? (json['stats'][1]['base_stat'] ?? 0) : 0,
       def: json['stats'] != null ? (json['stats'][2]['base_stat'] ?? 0) : 0,

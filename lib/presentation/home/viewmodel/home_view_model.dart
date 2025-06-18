@@ -102,7 +102,23 @@ class HomeViewModel extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return PokemonModel.fromJson(data);
+
+        // Filtrar apenas os moves de level-up no level 1
+        final List<String> initialMoves = [];
+
+        for (var move in data['moves']) {
+          for (var detail in move['version_group_details']) {
+            final learnMethod = detail['move_learn_method']['name'];
+            final levelLearnedAt = detail['level_learned_at'];
+
+            if (learnMethod == 'level-up' && levelLearnedAt == 1) {
+              initialMoves.add(move['move']['name']);
+            }
+          }
+        }
+
+        // Exemplo: passando os moves filtrados para o model
+        return PokemonModel.fromJson(data, initialMoves: initialMoves);
       } else {
         debugPrint(
           'Falha ao buscar Pokémon com ID $id. Status code: ${response.statusCode}',
