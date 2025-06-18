@@ -36,7 +36,7 @@ class PokemonModel {
     final id = json['id'] ?? 0;
     return PokemonModel(
       id: id,
-      name: json['name'] ?? '',
+      name: _capitalize(json['name'] ?? ''),
       imageUrl:
           'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png',
       tipos: (json['types'] != null)
@@ -91,5 +91,10 @@ class PokemonModel {
       return PokemonTypeColor.getColor(tipos.first);
     }
     return Colors.grey;
+  }
+
+  static String _capitalize(String value) {
+    if (value.isEmpty) return value;
+    return value[0].toUpperCase() + value.substring(1);
   }
 }
