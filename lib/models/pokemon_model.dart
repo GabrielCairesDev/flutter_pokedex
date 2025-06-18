@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/app/constants/pokemon_type_color.dart';
+
 class PokemonModel {
   final int id;
   final String name;
@@ -81,5 +84,12 @@ class PokemonModel {
       'sdef': sdef,
       'spd': spd,
     };
+  }
+
+  Color get primaryTypeColor {
+    if (tipos.isNotEmpty) {
+      return PokemonTypeColor.getColor(tipos.first);
+    }
+    return Colors.grey;
   }
 }
