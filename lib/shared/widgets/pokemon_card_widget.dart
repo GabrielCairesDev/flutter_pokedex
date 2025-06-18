@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/config/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
+import 'package:flutter_pokedex/core/constants/pokemon_type_color.dart';
 import 'package:flutter_pokedex/models/pokemon_model.dart';
 import 'package:flutter_pokedex/shared/widgets/cached_image_with_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class GridItemPokemon extends StatelessWidget {
-  const GridItemPokemon({super.key, required this.pokemon});
+class PokemonCardWidget extends StatelessWidget {
+  const PokemonCardWidget({super.key, required this.pokemon});
 
   final PokemonModel pokemon;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      clipBehavior: Clip.hardEdge, // Faz o clipping
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8.r),
-        color: AppColors.grayScaleWhite,
+        color: PokemonTypeColor.getColor(pokemon.types[0]).withOpacity(0.6),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.2),
@@ -28,14 +30,14 @@ class GridItemPokemon extends StatelessWidget {
       child: Stack(
         children: [
           Positioned(
-            top: 64.h,
+            top: 50.h,
             left: 0,
             right: 0,
             child: Container(
               height: 44.h,
               decoration: BoxDecoration(
-                color: AppColors.grayScaleBackground,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(8.r)),
+                color: PokemonTypeColor.getColor(pokemon.types[0]),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
           ),
@@ -48,25 +50,21 @@ class GridItemPokemon extends StatelessWidget {
                     alignment: Alignment.topRight,
                     child: Text(
                       '#${pokemon.id}',
-                      style: AppTypography().caption.copyWith(
-                        color: AppColors.grayScaleMedium,
+                      style: AppTypography().subtitle2.copyWith(
+                        color: AppColors.grayScaleBackground,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 72.h,
-                    width: 72.w,
-                    child: pokemon.imageUrl.isNotEmpty
-                        ? CachedImageWithLoader(
-                            imageUrl: pokemon.imageUrl,
-                            width: 72.w,
-                            height: 72.h,
-                          )
-                        : Container(color: Colors.blue),
-                  ),
+                  pokemon.imageUrl.isNotEmpty
+                      ? CachedImageWithLoader(
+                          imageUrl: pokemon.imageUrl,
+                          width: 68.w,
+                          height: 68.w,
+                        )
+                      : Container(color: Colors.blue),
                   Text(
                     pokemon.name,
-                    style: AppTypography().body3.copyWith(
+                    style: AppTypography().body2.copyWith(
                       color: AppColors.grayScaleDark,
                     ),
                   ),

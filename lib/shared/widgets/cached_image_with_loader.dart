@@ -16,7 +16,7 @@ class CachedImageWithLoader extends StatelessWidget {
     required this.width,
     required this.height,
     this.fit = BoxFit.contain,
-    this.errorColor = Colors.blue,
+    this.errorColor = Colors.transparent,
   });
 
   @override

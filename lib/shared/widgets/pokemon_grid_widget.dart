@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/models/pokemon_model.dart';
-import 'package:flutter_pokedex/shared/widgets/grid_iitem_pokemon.dart';
+import 'package:flutter_pokedex/shared/widgets/pokemon_card_widget.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class GridViewWidget extends StatelessWidget {
-  const GridViewWidget({
+class PokemonGridWidget extends StatelessWidget {
+  const PokemonGridWidget({
     super.key,
     required this.listPokemons,
     required this.onTap,
@@ -22,12 +22,12 @@ class GridViewWidget extends StatelessWidget {
           crossAxisCount: 3,
           crossAxisSpacing: 8.h,
           mainAxisSpacing: 8.w,
-          childAspectRatio: 104.w / 108.h,
+          childAspectRatio: 104.w / 104.w,
           clipBehavior: Clip.none,
           children: List.generate(listPokemons.length, (index) {
             return InkWell(
               onTap: () => onTap(listPokemons[index]),
-              child: GridItemPokemon(pokemon: listPokemons[index]),
+              child: PokemonCardWidget(pokemon: listPokemons[index]),
             );
           }),
         ),
