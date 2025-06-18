@@ -28,8 +28,6 @@ class PokemonStatsTextWidget extends StatelessWidget {
               ].map((label) => Text(label, style: textStyle)),
             ],
           ),
-          SizedBox(width: 8.w),
-          VerticalDivider(),
         ],
       ),
     );
