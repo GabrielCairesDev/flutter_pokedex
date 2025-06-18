@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/models/pokemon_model.dart';
-import 'package:flutter_pokedex/shared/widgets/grid_item_pokemon.dart';
+import 'package:flutter_pokedex/shared/widgets/grid_iitem_pokemon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class GridViewWidget extends StatelessWidget {
