@@ -23,27 +23,48 @@ class PokemonStatsLineWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final maxStats = 255;
+    final double maxWidth = 215.w;
+
+    /// Função para calcular o tamanho proporcional da barra
+    double calculateWidth(int stat) {
+      final percentage = stat / maxStats;
+      return maxWidth * percentage;
+    }
+
+    /// Lista de stats
+    final stats = [hp, atk, def, satk, sdef, spd];
+
     return SizedBox(
       height: 96.h,
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: stats.map((stat) {
+          return Stack(
             children: [
-              ...[hp, atk, def, satk, sdef, spd].map(
-                (label) => Container(
-                  width: 233,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: color,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+              /// Linha de fundo (background da barra)
+              Container(
+                width: maxWidth,
+                height: 5.h,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(2.r),
+                ),
+              ),
+
+              /// Linha da stat (proporcional)
+              Container(
+                width: calculateWidth(stat),
+                height: 5.h,
+                decoration: BoxDecoration(
+                  color: color,
+                  borderRadius: BorderRadius.circular(2.r),
                 ),
               ),
             ],
-          ),
-        ],
+          );
+        }).toList(),
       ),
     );
   }

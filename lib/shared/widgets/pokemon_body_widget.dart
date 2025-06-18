@@ -19,13 +19,13 @@ class PokemonBodyWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          WeightInfo(
+          WeightInfoWidget(
             iconAsset: AppAssets.weight,
             weightText: '${pokemon.weight} kg',
             label: 'Weight',
           ),
           VerticalDivider(),
-          WeightInfo(
+          WeightInfoWidget(
             iconAsset: AppAssets.height,
             weightText: '${pokemon.weight} m',
             label: 'Height',

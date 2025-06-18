@@ -51,7 +51,7 @@ class _PokemonViewState extends State<PokemonView> {
                             ),
                             SizedBox(height: 8.h),
                             PokemonTypeWidget(types: vm.pokemonSelected.types),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 16.h),
                             Text(
                               'About',
                               style: AppTypography().subtitle1.copyWith(
@@ -60,20 +60,20 @@ class _PokemonViewState extends State<PokemonView> {
                                 ),
                               ),
                             ),
-                            SizedBox(height: 8.h),
+                            SizedBox(height: 16.h),
                             PokemonBodyWidget(pokemon: vm.pokemonSelected),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 24.w),
                               child: Column(
                                 children: [
-                                  SizedBox(height: 32.h),
+                                  SizedBox(height: 24.h),
                                   Text(
                                     vm.pokemonSelected.description,
                                     style: AppTypography().body1.copyWith(
                                       color: AppColors.grayScaleDark,
                                     ),
                                   ),
-                                  SizedBox(height: 32.h),
+                                  SizedBox(height: 24.h),
                                   Text(
                                     'Base Stats',
                                     style: AppTypography().subtitle1.copyWith(

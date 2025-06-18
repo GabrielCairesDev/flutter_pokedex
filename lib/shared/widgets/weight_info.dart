@@ -4,12 +4,12 @@ import 'package:flutter_pokedex/app/config/app_typography.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class WeightInfo extends StatelessWidget {
+class WeightInfoWidget extends StatelessWidget {
   final String iconAsset;
   final String weightText;
   final String label;
 
-  const WeightInfo({
+  const WeightInfoWidget({
     super.key,
     required this.iconAsset,
     required this.weightText,
@@ -49,7 +49,7 @@ class WeightInfo extends StatelessWidget {
 
             Text(
               label,
-              style: AppTypography().caption.copyWith(
+              style: AppTypography().body2.copyWith(
                 color: AppColors.grayScaleMedium,
               ),
             ),

@@ -35,7 +35,7 @@ class PokemonMovesWidget extends StatelessWidget {
           SizedBox(height: 2.h),
           Text(
             'Moves',
-            style: AppTypography().caption.copyWith(
+            style: AppTypography().body2.copyWith(
               color: AppColors.grayScaleMedium,
             ),
           ),
