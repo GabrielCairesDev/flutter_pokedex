@@ -16,7 +16,7 @@ class PokemonTypeWidget extends StatelessWidget {
       children: types
           .map(
             (type) => Padding(
-              padding: EdgeInsets.only(right: 24.w),
+              padding: EdgeInsets.only(right: 16.w),
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                 decoration: BoxDecoration(
