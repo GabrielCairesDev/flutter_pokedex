@@ -21,11 +21,19 @@ class PokemonStatsNumbWidget extends StatelessWidget {
   final String sdef;
   final String spd;
 
+  String formatStat(String value) {
+    final intVal = int.tryParse(value) ?? 0;
+    return intVal.toString().padLeft(3, '0');
+  }
+
   @override
   Widget build(BuildContext context) {
     final textStyle = AppTypography().body3.copyWith(
       color: AppColors.grayScaleDark,
     );
+
+    final stats = [hp, atk, def, satk, sdef, spd];
+
     return SizedBox(
       height: 96.h,
       child: Row(
@@ -33,16 +41,9 @@ class PokemonStatsNumbWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ...[
-                hp,
-                atk,
-                def,
-                satk,
-                sdef,
-                spd,
-              ].map((label) => Text(label, style: textStyle)),
-            ],
+            children: stats
+                .map((label) => Text(formatStat(label), style: textStyle))
+                .toList(),
           ),
         ],
       ),

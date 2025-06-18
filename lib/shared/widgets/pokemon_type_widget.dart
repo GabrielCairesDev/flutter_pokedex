@@ -20,7 +20,7 @@ class PokemonTypeWidget extends StatelessWidget {
         return Padding(
           padding: EdgeInsets.only(right: index != types.length - 1 ? 16.w : 0),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
             decoration: BoxDecoration(
               color: PokemonTypeColor.getColor(type),
               borderRadius: BorderRadius.circular(10.r),

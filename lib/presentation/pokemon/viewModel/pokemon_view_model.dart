@@ -7,4 +7,17 @@ class PokemonViewModel extends ChangeNotifier {
   HomeViewModel get _homeViewModel => GetIt.I.get<HomeViewModel>();
 
   PokemonModel get pokemonSelected => _homeViewModel.pokemonSelected!;
+
+  bool get isFirstPokemon => _homeViewModel.isFirstPokemon;
+  bool get isLastPokemon => _homeViewModel.isLastPokemon;
+
+  void selectPokemonNext() {
+    _homeViewModel.selectPokemonNext();
+    notifyListeners();
+  }
+
+  void selectPokemonPrevious() {
+    _homeViewModel.selectPokemonPrevious();
+    notifyListeners();
+  }
 }

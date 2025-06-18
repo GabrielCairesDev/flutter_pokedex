@@ -24,7 +24,7 @@ class PokemonStatsLineWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final maxStats = 255;
-    final double maxWidth = 215.w;
+    final double maxWidth = 210.w;
 
     /// Função para calcular o tamanho proporcional da barra
     double calculateWidth(int stat) {

@@ -20,6 +20,16 @@ class HomeViewModel extends ChangeNotifier {
   int get quantityPokemons => _quantityPokemons;
   bool get isLoading => _isLoading;
 
+  bool get isFirstPokemon {
+    final index = listPokemons.indexOf(pokemonSelected!);
+    return index == 0;
+  }
+
+  bool get isLastPokemon {
+    final index = listPokemons.indexOf(pokemonSelected!);
+    return index == listPokemons.length - 1;
+  }
+
   Future<void> init() async {
     _registerInGetIt();
     _setLoading(true);
@@ -66,7 +76,7 @@ class HomeViewModel extends ChangeNotifier {
 
   Future<void> _fetchAllPokemonsWithConcurrencyLimit() async {
     _listPokemons.clear();
-    const int maxConcurrent = 10; 
+    const int maxConcurrent = 100;
     final ids = List.generate(_quantityPokemons, (index) => index + 1);
     final queue = Queue<int>.from(ids);
     int caught = 0;
@@ -144,6 +154,21 @@ class HomeViewModel extends ChangeNotifier {
 
   void selectPokemon(PokemonModel pokemon) {
     pokemonSelected = pokemon;
+    notifyListeners();
+  }
+
+  void selectPokemonNext() {
+    final index = listPokemons.indexOf(pokemonSelected!);
+    final nextIndex = (index + 1) % listPokemons.length;
+    pokemonSelected = listPokemons[nextIndex];
+    notifyListeners();
+  }
+
+  void selectPokemonPrevious() {
+    final index = listPokemons.indexOf(pokemonSelected!);
+    final previousIndex =
+        (index - 1 + listPokemons.length) % listPokemons.length;
+    pokemonSelected = listPokemons[previousIndex];
     notifyListeners();
   }
 }
