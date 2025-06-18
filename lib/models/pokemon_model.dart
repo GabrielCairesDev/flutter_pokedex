@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/app/constants/pokemon_type_color.dart';
+import 'package:flutter_pokedex/core/constants/pokemon_type_color.dart';
 
 class PokemonModel {
   final int id;
   final String name;
   final String imageUrl;
-  final List<String> tipos;
+  final List<String> types;
   final double weight;
   final double height;
   final List<String> moves;
@@ -20,7 +20,7 @@ class PokemonModel {
     required this.id,
     required this.name,
     required this.imageUrl,
-    required this.tipos,
+    required this.types,
     required this.weight,
     required this.height,
     required this.moves,
@@ -39,12 +39,12 @@ class PokemonModel {
       name: _capitalize(json['name'] ?? ''),
       imageUrl:
           'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/$id.png',
-      tipos: (json['types'] != null)
-          ? List<String>.from(
-              (json['types'] as List).map(
-                (type) => type['type']['name'] as String,
-              ),
-            )
+      types: (json['types'] != null)
+          ? (json['types'] as List)
+                .map<String>(
+                  (type) => _capitalize(type['type']['name'] as String),
+                )
+                .toList()
           : <String>[],
       weight: (json['weight'] != null)
           ? (json['weight'] as num).toDouble()
@@ -73,7 +73,7 @@ class PokemonModel {
       'id': id,
       'name': name,
       'imageUrl': imageUrl,
-      'tipos': tipos,
+      'tipos': types,
       'weight': weight,
       'height': height,
       'moves': moves,
@@ -87,8 +87,8 @@ class PokemonModel {
   }
 
   Color get color {
-    if (tipos.isNotEmpty) {
-      return PokemonTypeColor.getColor(tipos.first);
+    if (types.isNotEmpty) {
+      return PokemonTypeColor.getColor(types.first);
     }
     return Colors.grey;
   }
