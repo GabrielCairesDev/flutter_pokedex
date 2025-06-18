@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/app/config/app_colors.dart';
-import 'package:flutter_pokedex/presentation/pokemon/viewModel/pokemon_view_model.dart';
+import 'package:flutter_pokedex/core/constants/app_colors.dart';
+import 'package:flutter_pokedex/presentation/pokemon/viewmodel/pokemon_view_model.dart';
 import 'package:flutter_pokedex/shared/widgets/app_bar_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/big_pokeball_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/cached_image_with_loader.dart';

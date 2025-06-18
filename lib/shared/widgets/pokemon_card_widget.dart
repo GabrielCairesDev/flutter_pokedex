@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/app/config/app_colors.dart';
+import 'package:flutter_pokedex/core/constants/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
 import 'package:flutter_pokedex/core/constants/pokemon_type_color.dart';
-import 'package:flutter_pokedex/models/pokemon_model.dart';
+import 'package:flutter_pokedex/data/models/pokemon_model.dart';
 import 'package:flutter_pokedex/shared/widgets/cached_image_with_loader.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

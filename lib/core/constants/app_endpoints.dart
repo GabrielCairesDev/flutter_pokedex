@@ -1,5 +1,5 @@
-class EnpointsConstants {
-  EnpointsConstants._();
+class AppEnpoints {
+  AppEnpoints._();
 
   static const String pokemonsSpeciesCount =
       'https://pokeapi.co/api/v2/pokemon-species/?limit=0';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/app/config/app_colors.dart';
+import 'package:flutter_pokedex/core/constants/app_colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BackGroundGridWidget extends StatelessWidget {

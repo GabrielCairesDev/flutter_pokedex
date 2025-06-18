@@ -1,73 +1,39 @@
-import 'dart:collection';
-import 'dart:convert';
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/core/constants/enpoints_constants.dart';
-import 'package:flutter_pokedex/models/pokemon_model.dart';
+import 'package:flutter_pokedex/data/models/pokemon_model.dart';
+import 'package:flutter_pokedex/domain/repositories/pokemon_repository.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
 
 class HomeViewModel extends ChangeNotifier {
-  final List<PokemonModel> _listPokemons = [];
+  final PokemonRepository repository = GetIt.I.get<PokemonRepository>();
   final searchController = TextEditingController();
 
-  int _quantityPokemons = 0;
-
+  List<PokemonModel> _pokemons = [];
   bool _isLoading = true;
+  PokemonModel? selectedPokemon;
 
-  PokemonModel? pokemonSelected;
-
-  List<PokemonModel> get listPokemons {
+  List<PokemonModel> get pokemons {
     final searchText = searchController.text.trim().toLowerCase();
+    final filtered = searchText.isEmpty
+        ? _pokemons
+        : _pokemons.where((p) {
+            final nameMatches = p.name.toLowerCase().contains(searchText);
+            final idMatches = p.id.toString().contains(searchText);
+            return nameMatches || idMatches;
+          }).toList();
 
-    if (searchText.isEmpty) {
-      return _listPokemons..sort((a, b) => a.id.compareTo(b.id));
-    }
-
-    return _listPokemons.where((pokemon) {
-      final nameMatches = pokemon.name.toLowerCase().contains(searchText);
-      final idMatches = pokemon.id.toString().contains(searchText);
-      return nameMatches || idMatches;
-    }).toList()..sort((a, b) => a.id.compareTo(b.id));
+    filtered.sort((a, b) => a.id.compareTo(b.id));
+    return filtered;
   }
 
-  int get quantityPokemons => _quantityPokemons;
   bool get isLoading => _isLoading;
-
-  bool get isFirstPokemon {
-    final index = listPokemons.indexOf(pokemonSelected!);
-    return index == 0;
-  }
-
-  bool get isLastPokemon {
-    final index = listPokemons.indexOf(pokemonSelected!);
-    return index == listPokemons.length - 1;
-  }
+  bool get isFirst => selectedPokemon != null && pokemons.indexOf(selectedPokemon!) == 0;
+  bool get isLast => selectedPokemon != null && pokemons.indexOf(selectedPokemon!) == pokemons.length - 1;
 
   Future<void> init() async {
     _registerInGetIt();
     _setLoading(true);
-    await _fetchQuantityPokemons();
-    await _fetchAllPokemonsWithConcurrencyLimit();
+    _pokemons = await repository.fetchAllPokemons();
     _setLoading(false);
-  }
-
-  @override
-  void dispose() {
-    _unregisterFromGetIt();
-    super.dispose();
-  }
-
-  void _registerInGetIt() {
-    if (!GetIt.I.isRegistered<HomeViewModel>()) {
-      GetIt.I.registerSingleton<HomeViewModel>(this);
-    }
-  }
-
-  void _unregisterFromGetIt() {
-    if (GetIt.I.isRegistered<HomeViewModel>()) {
-      GetIt.I.unregister<HomeViewModel>();
-    }
   }
 
   void _setLoading(bool value) {
@@ -75,111 +41,40 @@ class HomeViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> _fetchQuantityPokemons() async {
-    final url = Uri.parse(EnpointsConstants.pokemonsSpeciesCount);
-    try {
-      final response = await http.get(url).timeout(const Duration(seconds: 10));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        _quantityPokemons = data['count'] ?? 0;
-      }
-    } catch (e) {
-      debugPrint('Erro ao buscar quantidade de Pokémons: $e');
-    }
-  }
-
-  Future<void> _fetchAllPokemonsWithConcurrencyLimit() async {
-    _listPokemons.clear();
-    const int maxConcurrent = 100;
-    final ids = List.generate(_quantityPokemons, (index) => index + 1);
-    final queue = Queue<int>.from(ids);
-
-    Future<void> worker() async {
-      while (queue.isNotEmpty) {
-        final id = queue.removeFirst();
-        final pokemon = await _fetchPokemonById(id);
-        if (pokemon != null) {
-          _listPokemons.add(pokemon);
-        }
-      }
-    }
-
-    final futures = List.generate(maxConcurrent, (_) => worker());
-    await Future.wait(futures);
-  }
-
-  Future<PokemonModel?> _fetchPokemonById(int id) async {
-    final url = Uri.parse(EnpointsConstants.pokemonDetails(id));
-
-    try {
-      final response = await http.get(url).timeout(const Duration(seconds: 10));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final List<String> initialMoves = [];
-
-        for (var move in data['moves']) {
-          for (var detail in move['version_group_details']) {
-            final learnMethod = detail['move_learn_method']['name'];
-            final levelLearnedAt = detail['level_learned_at'];
-            if (learnMethod == 'level-up' && levelLearnedAt == 1) {
-              initialMoves.add(move['move']['name']);
-            }
-          }
-        }
-
-        final description = await _fetchPokemonDescription(id);
-        return PokemonModel.fromJson(
-          data,
-          initialMoves: initialMoves,
-        ).copyWith(description: description);
-      }
-    } catch (e) {
-      debugPrint('Erro ao buscar Pokémon ID $id: $e');
-    }
-    return null;
-  }
-
-  Future<String> _fetchPokemonDescription(int id) async {
-    final url = Uri.parse(EnpointsConstants.pokemonSpecies(id));
-
-    try {
-      final response = await http.get(url).timeout(const Duration(seconds: 10));
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        final flavorEntries = data['flavor_text_entries'] as List;
-        for (var entry in flavorEntries) {
-          if (entry['language']['name'] == 'en') {
-            return (entry['flavor_text'] as String)
-                .replaceAll('\n', ' ')
-                .replaceAll('\f', ' ');
-          }
-        }
-      }
-    } catch (e) {
-      debugPrint('Erro ao buscar descrição do Pokémon ID $id: $e');
-    }
-    return '';
-  }
-
   void selectPokemon(PokemonModel pokemon) {
-    pokemonSelected = pokemon;
+    selectedPokemon = pokemon;
     notifyListeners();
   }
 
-  void selectPokemonNext() {
-    final index = listPokemons.indexOf(pokemonSelected!);
-    final nextIndex = (index + 1) % listPokemons.length;
-    pokemonSelected = listPokemons[nextIndex];
-    notifyListeners();
+  void nextPokemon() {
+    final index = pokemons.indexOf(selectedPokemon!);
+    if (index < pokemons.length - 1) {
+      selectedPokemon = pokemons[index + 1];
+      notifyListeners();
+    }
   }
 
-  void selectPokemonPrevious() {
-    final index = listPokemons.indexOf(pokemonSelected!);
-    final previousIndex =
-        (index - 1 + listPokemons.length) % listPokemons.length;
-    pokemonSelected = listPokemons[previousIndex];
-    notifyListeners();
+  void previousPokemon() {
+    final index = pokemons.indexOf(selectedPokemon!);
+    if (index > 0) {
+      selectedPokemon = pokemons[index - 1];
+      notifyListeners();
+    }
   }
 
   void searching() => notifyListeners();
+
+  void _registerInGetIt() {
+    if (!GetIt.I.isRegistered<HomeViewModel>()) {
+      GetIt.I.registerSingleton<HomeViewModel>(this);
+    }
+  }
+
+  @override
+  void dispose() {
+    if (GetIt.I.isRegistered<HomeViewModel>()) {
+      GetIt.I.unregister<HomeViewModel>();
+    }
+    super.dispose();
+  }
 }

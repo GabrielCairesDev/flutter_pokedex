@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/core/constants/app_assets.dart';
-import 'package:flutter_pokedex/models/pokemon_model.dart';
+import 'package:flutter_pokedex/data/models/pokemon_model.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_moves_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/weight_info.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

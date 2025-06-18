@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/app/config/app_colors.dart';
+import 'package:flutter_pokedex/core/constants/app_colors.dart';
 import 'package:flutter_pokedex/app/routes/app_routes.dart';
 import 'package:flutter_pokedex/shared/widgets/back_ground_grid_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/circular_progress_indicator.dart';
@@ -52,7 +52,7 @@ class _HomeViewState extends State<HomeView> {
                     child: vm.isLoading
                         ? Center(child: CircularProgressIndicatorWidget())
                         : PokemonGridWidget(
-                            listPokemons: vm.listPokemons,
+                            listPokemons: vm.pokemons,
                             onTap: (pokemon) {
                               vm.selectPokemon(pokemon);
                               Navigator.pushNamed(context, AppRoutes.pokemon);
