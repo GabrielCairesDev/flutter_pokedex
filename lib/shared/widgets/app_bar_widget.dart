@@ -37,7 +37,7 @@ class AppBarWidget extends StatelessWidget {
           Spacer(),
           Text(
             '#${vm.pokemonSelected.id.toString()}',
-            style: AppTypography().subtitle2.copyWith(
+            style: AppTypography().subtitle1.copyWith(
               color: AppColors.grayScaleWhite,
             ),
           ),
