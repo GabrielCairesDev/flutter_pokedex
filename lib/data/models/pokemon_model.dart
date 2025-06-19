@@ -96,6 +96,29 @@ class PokemonModel {
     );
   }
 
+  factory PokemonModel.fromCacheJson(Map<String, dynamic> json) {
+    return PokemonModel(
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
+      imageUrl: json['imageUrl'] ?? '',
+      types: (json['types'] != null)
+          ? List<String>.from(json['types'] as List)
+          : <String>[],
+      weight: (json['weight'] ?? 0.0).toDouble(),
+      height: (json['height'] ?? 0.0).toDouble(),
+      moves: (json['moves'] != null)
+          ? List<String>.from(json['moves'] as List)
+          : <String>[],
+      hp: json['hp'] ?? 0,
+      atk: json['atk'] ?? 0,
+      def: json['def'] ?? 0,
+      satk: json['satk'] ?? 0,
+      sdef: json['sdef'] ?? 0,
+      spd: json['spd'] ?? 0,
+      description: json['description'] ?? '',
+    );
+  }
+
   Map<String, dynamic> toJson() {
     return {
       'id': id,

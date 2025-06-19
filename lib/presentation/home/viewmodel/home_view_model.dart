@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/data/models/pokemon_model.dart';
+import 'package:flutter_pokedex/domain/repositories/pokemon_local_repository.dart';
 import 'package:flutter_pokedex/domain/repositories/pokemon_repository.dart';
 import 'package:get_it/get_it.dart';
 
 class HomeViewModel extends ChangeNotifier {
-  final PokemonRepository repository = GetIt.I.get<PokemonRepository>();
   final searchController = TextEditingController();
 
   List<PokemonModel> _pokemons = [];
@@ -33,10 +33,22 @@ class HomeViewModel extends ChangeNotifier {
       pokemons.indexOf(selectedPokemon!) == pokemons.length - 1;
 
   Future<void> init() async {
+    final PokemonRepository repository = GetIt.I.get<PokemonRepository>();
+    final PokemonLocalRepository localRepository = PokemonLocalRepository();
+
     _registerInGetIt();
     _setLoading(true);
-    int quantity = await repository.fetchPokemonCount();
-    _pokemons = await repository.fetchAllPokemons(quantity);
+
+    int totalOnlinePokemons = await repository.fetchPokemonCount();
+    List<PokemonModel> cachedPokemons = await localRepository.getAllPokemons();
+
+    if (cachedPokemons.length < totalOnlinePokemons) {
+      _pokemons = await repository.fetchAllPokemons(totalOnlinePokemons);
+      await localRepository.savePokemons(_pokemons);
+    } else {
+      _pokemons = cachedPokemons;
+    }
+
     _setLoading(false);
   }
 
