@@ -65,6 +65,8 @@ class PokemonCardWidget extends StatelessWidget {
                       : Container(color: Colors.blue),
                   Text(
                     pokemon.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: AppTypography().body2.copyWith(
                       color: AppColors.grayScaleDark,
                     ),
