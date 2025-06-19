@@ -20,22 +20,25 @@ class PokemonRemoteDatasource implements PokemonRepository {
           .timeout(const Duration(seconds: 10));
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return data['count'] ?? 0;
+        final count = data['count'] ?? 0;
+        debugPrint('✅ Quantidade de Pokémons recuperada com sucesso: $count');
+        return count;
       }
     } catch (e) {
-      debugPrint('Erro ao buscar quantidade de Pokémons: $e');
+      debugPrint('❌ Erro ao buscar quantidade de Pokémons: $e');
     }
     return 0;
   }
 
   @override
-  Future<List<PokemonModel>> fetchAllPokemons() async {
-    final quantity = await fetchPokemonCount();
+  Future<List<PokemonModel>> fetchAllPokemons(int quantity) async {
     final List<PokemonModel> pokemons = [];
     const int maxConcurrent = 100;
     final queue = Queue<int>.from(
       List.generate(quantity, (index) => index + 1),
     );
+
+    debugPrint('🔄 Iniciando busca de $quantity Pokémons...');
 
     Future<void> worker() async {
       while (queue.isNotEmpty) {
@@ -43,6 +46,7 @@ class PokemonRemoteDatasource implements PokemonRepository {
         final pokemon = await fetchPokemonById(id);
         if (pokemon != null) {
           pokemons.add(pokemon);
+          debugPrint('✅ Pokémon ID $id carregado com sucesso.');
         }
       }
     }
@@ -50,6 +54,9 @@ class PokemonRemoteDatasource implements PokemonRepository {
     final futures = List.generate(maxConcurrent, (_) => worker());
     await Future.wait(futures);
 
+    debugPrint(
+      '🏁 Finalizada a busca de Pokémons. Total carregados: ${pokemons.length}',
+    );
     return pokemons;
   }
 
@@ -77,14 +84,20 @@ class PokemonRemoteDatasource implements PokemonRepository {
 
         final description = await fetchPokemonDescription(id);
 
+        debugPrint('✅ Dados do Pokémon ID $id recuperados com sucesso.');
+
         return PokemonModel.fromJson(
           data,
           initialMoves: initialMoves,
           description: description,
         );
+      } else {
+        debugPrint(
+          '⚠️ Falha ao buscar detalhes do Pokémon ID $id. Status code: ${response.statusCode}',
+        );
       }
     } catch (e) {
-      debugPrint('Erro ao buscar Pokémon ID $id: $e');
+      debugPrint('❌ Erro ao buscar Pokémon ID $id: $e');
     }
     return null;
   }
@@ -102,14 +115,23 @@ class PokemonRemoteDatasource implements PokemonRepository {
         final flavorEntries = data['flavor_text_entries'] as List;
         for (var entry in flavorEntries) {
           if (entry['language']['name'] == 'en') {
-            return (entry['flavor_text'] as String)
+            final description = (entry['flavor_text'] as String)
                 .replaceAll('\n', ' ')
                 .replaceAll('\f', ' ');
+            debugPrint('✅ Descrição do Pokémon ID $id recuperada com sucesso.');
+            return description;
           }
         }
+        debugPrint(
+          '⚠️ Nenhuma descrição em inglês encontrada para Pokémon ID $id.',
+        );
+      } else {
+        debugPrint(
+          '⚠️ Falha ao buscar descrição do Pokémon ID $id. Status code: ${response.statusCode}',
+        );
       }
     } catch (e) {
-      debugPrint('Erro ao buscar descrição do Pokémon ID $id: $e');
+      debugPrint('❌ Erro ao buscar descrição do Pokémon ID $id: $e');
     }
     return '';
   }

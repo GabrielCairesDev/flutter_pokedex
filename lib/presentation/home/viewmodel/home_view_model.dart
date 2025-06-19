@@ -26,13 +26,17 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   bool get isLoading => _isLoading;
-  bool get isFirst => selectedPokemon != null && pokemons.indexOf(selectedPokemon!) == 0;
-  bool get isLast => selectedPokemon != null && pokemons.indexOf(selectedPokemon!) == pokemons.length - 1;
+  bool get isFirst =>
+      selectedPokemon != null && pokemons.indexOf(selectedPokemon!) == 0;
+  bool get isLast =>
+      selectedPokemon != null &&
+      pokemons.indexOf(selectedPokemon!) == pokemons.length - 1;
 
   Future<void> init() async {
     _registerInGetIt();
     _setLoading(true);
-    _pokemons = await repository.fetchAllPokemons();
+    int quantity = await repository.fetchPokemonCount();
+    _pokemons = await repository.fetchAllPokemons(quantity);
     _setLoading(false);
   }
 
