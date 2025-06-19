@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/core/constants/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
-import 'package:flutter_pokedex/core/constants/pokemon_type_color.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PokemonTypeWidget extends StatelessWidget {
@@ -22,7 +21,7 @@ class PokemonTypeWidget extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
             decoration: BoxDecoration(
-              color: PokemonTypeColor.getColor(type),
+              color: AppColors.getColorByPokemonType(type),
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Text(

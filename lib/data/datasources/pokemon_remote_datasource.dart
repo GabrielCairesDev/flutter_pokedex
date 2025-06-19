@@ -6,9 +6,22 @@ import 'package:flutter_pokedex/data/models/pokemon_model.dart';
 import 'package:flutter_pokedex/domain/repositories/pokemon_repository.dart';
 import 'package:http/http.dart' as http;
 
+/// Fonte de dados remota responsável por buscar informações de Pokémons através da PokeAPI.
+///
+/// Esta classe implementa o contrato definido pela interface [PokemonRepository],
+/// realizando chamadas HTTP para obter dados como quantidade total de Pokémons,
+/// detalhes individuais e descrições.
+///
+/// Exemplo de uso:
+/// ```dart
+/// final remoteDatasource = PokemonRemoteDatasource(client: http.Client());
+/// final count = await remoteDatasource.fetchPokemonCount();
+/// ```
 class PokemonRemoteDatasource implements PokemonRepository {
+  /// Cliente HTTP usado para realizar as requisições.
   final http.Client client;
 
+  /// Construtor que recebe um [http.Client] para facilitar injeção de dependência e testes.
   PokemonRemoteDatasource({required this.client});
 
   @override
@@ -34,12 +47,15 @@ class PokemonRemoteDatasource implements PokemonRepository {
   Future<List<PokemonModel>> fetchAllPokemons(int quantity) async {
     final List<PokemonModel> pokemons = [];
     const int maxConcurrent = 100;
+
+    // Fila com os IDs dos Pokémons a serem buscados
     final queue = Queue<int>.from(
       List.generate(quantity, (index) => index + 1),
     );
 
     debugPrint('🔄 Iniciando busca de $quantity Pokémons...');
 
+    // Função que processa os IDs da fila (trabalhador)
     Future<void> worker() async {
       while (queue.isNotEmpty) {
         final id = queue.removeFirst();
@@ -51,6 +67,7 @@ class PokemonRemoteDatasource implements PokemonRepository {
       }
     }
 
+    // Executa múltiplos workers de forma concorrente
     final futures = List.generate(maxConcurrent, (_) => worker());
     await Future.wait(futures);
 
@@ -72,6 +89,7 @@ class PokemonRemoteDatasource implements PokemonRepository {
         final data = jsonDecode(response.body);
         final List<String> initialMoves = [];
 
+        // Filtra os golpes aprendidos no nível 1 por level-up
         for (var move in data['moves']) {
           for (var detail in move['version_group_details']) {
             final learnMethod = detail['move_learn_method']['name'];

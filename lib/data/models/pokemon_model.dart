@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pokedex/core/constants/pokemon_type_color.dart';
+import 'package:flutter_pokedex/core/constants/app_colors.dart';
 
 class PokemonModel {
   final int id;
@@ -159,7 +159,7 @@ class PokemonModel {
 
   Color get color {
     if (types.isNotEmpty) {
-      return PokemonTypeColor.getColor(types.first);
+      return AppColors.getColorByPokemonType(types.first);
     }
     return Colors.grey;
   }

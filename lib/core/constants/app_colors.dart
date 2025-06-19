@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 
+/// Classe que centraliza todas as cores utilizadas na aplicação.
+///
+/// Esta classe define constantes de cores para diferentes tipos de Pokémon,
+/// além de tons de cinza para uso geral na interface.
+///
+/// Também fornece um método utilitário para obter uma cor com base no tipo de Pokémon.
+///
+/// Exemplo de uso:
+/// ```dart
+/// Color color = AppColors.getColorByPokemonType('fire');
+/// ```
 class AppColors {
+  /// Construtor privado para evitar instanciação da classe.
   AppColors._();
-  static const Color identityPrimary = Color(0xFFDC0A2D);
 
+  // Cores da identidade visual e tipos de Pokémon
+  static const Color identityPrimary = Color(0xFFDC0A2D);
   static const Color pokemonTypeBug = Color(0xFFA7B723);
   static const Color pokemonTypeDark = Color(0xFF75574C);
   static const Color pokemonTypeDragon = Color(0xFF7037FF);
@@ -23,12 +36,25 @@ class AppColors {
   static const Color pokemonTypeSteel = Color(0xFFB7B9D0);
   static const Color pokemonTypeWater = Color(0xFF6493EB);
 
+  // Tons de cinza
   static const Color grayScaleDark = Color(0xFF212121);
   static const Color grayScaleMedium = Color(0xFF666666);
   static const Color grayScaleLight = Color(0xFFE0E0E0);
   static const Color grayScaleBackground = Color(0xFFEFEFEF);
   static const Color grayScaleWhite = Color(0xFFFFFFFF);
 
+  /// Retorna a cor correspondente a um tipo de Pokémon.
+  ///
+  /// Caso o tipo informado não corresponda a nenhum tipo conhecido,
+  /// retorna a cor primária da identidade visual como fallback.
+  ///
+  /// Parâmetros:
+  /// - [type]: Nome do tipo de Pokémon (case-insensitive).
+  ///
+  /// Exemplo:
+  /// ```dart
+  /// Color color = AppColors.getColorByPokemonType('grass');
+  /// ```
   static Color getColorByPokemonType(String type) {
     switch (type.toLowerCase()) {
       case 'bug':

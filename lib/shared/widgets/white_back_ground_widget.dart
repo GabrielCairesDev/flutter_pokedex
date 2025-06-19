@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/core/constants/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
-import 'package:flutter_pokedex/core/constants/pokemon_type_color.dart';
 import 'package:flutter_pokedex/data/models/pokemon_model.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_body_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_stats_line_widget.dart';
@@ -35,7 +34,9 @@ class WhiteBackGroundWidget extends StatelessWidget {
             Text(
               'About',
               style: AppTypography().subtitle1.copyWith(
-                color: PokemonTypeColor.getColor(pokemonSelected.types[0]),
+                color: AppColors.getColorByPokemonType(
+                  pokemonSelected.types[0],
+                ),
               ),
             ),
             SizedBox(height: 12.h),
@@ -55,7 +56,7 @@ class WhiteBackGroundWidget extends StatelessWidget {
                   Text(
                     'Base Stats',
                     style: AppTypography().subtitle1.copyWith(
-                      color: PokemonTypeColor.getColor(
+                      color: AppColors.getColorByPokemonType(
                         pokemonSelected.types[0],
                       ),
                     ),
@@ -66,7 +67,7 @@ class WhiteBackGroundWidget extends StatelessWidget {
                     child: Row(
                       children: [
                         PokemonStatsTextWidget(
-                          color: PokemonTypeColor.getColor(
+                          color: AppColors.getColorByPokemonType(
                             pokemonSelected.types[0],
                           ),
                         ),
@@ -89,7 +90,7 @@ class WhiteBackGroundWidget extends StatelessWidget {
                           satk: pokemonSelected.satk,
                           sdef: pokemonSelected.sdef,
                           spd: pokemonSelected.spd,
-                          color: PokemonTypeColor.getColor(
+                          color: AppColors.getColorByPokemonType(
                             pokemonSelected.types[0],
                           ),
                         ),
