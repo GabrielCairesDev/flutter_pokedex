@@ -12,10 +12,15 @@ class HomeTopWidget extends StatelessWidget {
     super.key,
     required this.controller,
     required this.onChanged,
+    required this.groupValue,
+    required this.onChangedRadio,
   });
 
   final TextEditingController controller;
   final Function(String)? onChanged;
+
+  final Function(int?) onChangedRadio;
+  final int groupValue;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +50,10 @@ class HomeTopWidget extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 16.w),
-              HashTagButtonWidget(),
+              HashTagButtonWidget(
+                onChanged: onChangedRadio,
+                groupValue: groupValue,
+              ),
             ],
           ),
         ],

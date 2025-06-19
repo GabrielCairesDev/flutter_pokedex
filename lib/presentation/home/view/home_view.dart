@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/core/constants/app_colors.dart';
 import 'package:flutter_pokedex/app/routes/app_routes.dart';
 import 'package:flutter_pokedex/shared/widgets/back_ground_grid_widget.dart';
-import 'package:flutter_pokedex/shared/widgets/circular_progress_indicator.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_grid_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/home_top_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/scaffold_widget.dart';
@@ -46,11 +45,13 @@ class _HomeViewState extends State<HomeView> {
                 HomeTopWidget(
                   controller: vm.searchController,
                   onChanged: (p0) => vm.searching(),
+                  onChangedRadio: (p0) => vm.onChangedRadio(p0),
+                  groupValue: vm.groupValue,
                 ),
                 Expanded(
                   child: BackGroundGridWidget(
                     child: vm.isLoading
-                        ? Center(child: CircularProgressIndicatorWidget())
+                        ? Center(child: Text('Carregando...'))
                         : PokemonGridWidget(
                             listPokemons: vm.pokemons,
                             onTap: (pokemon) {

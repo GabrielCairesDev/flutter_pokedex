@@ -11,8 +11,11 @@ class HomeViewModel extends ChangeNotifier {
   bool _isLoading = true;
   PokemonModel? selectedPokemon;
 
+  int groupValue = 1;
+
   List<PokemonModel> get pokemons {
     final searchText = searchController.text.trim().toLowerCase();
+
     final filtered = searchText.isEmpty
         ? _pokemons
         : _pokemons.where((p) {
@@ -21,7 +24,14 @@ class HomeViewModel extends ChangeNotifier {
             return nameMatches || idMatches;
           }).toList();
 
-    filtered.sort((a, b) => a.id.compareTo(b.id));
+    if (groupValue == 1) {
+      filtered.sort((a, b) => a.id.compareTo(b.id));
+    } else if (groupValue == 2) {
+      filtered.sort(
+        (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()),
+      );
+    }
+
     return filtered;
   }
 
@@ -79,6 +89,11 @@ class HomeViewModel extends ChangeNotifier {
   }
 
   void searching() => notifyListeners();
+
+  void onChangedRadio(int? value) {
+    groupValue = value!;
+    notifyListeners();
+  }
 
   void _registerInGetIt() {
     if (!GetIt.I.isRegistered<HomeViewModel>()) {
