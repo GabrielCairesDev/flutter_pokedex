@@ -27,39 +27,22 @@ class PokemonStatsLineWidget extends StatelessWidget {
     final maxStats = 255;
     final double maxWidth = 210.w;
 
-    double calculateWidth(int stat) {
-      final percentage = stat / maxStats;
-      return maxWidth * percentage;
-    }
-
     final stats = [hp, atk, def, satk, sdef, spd];
 
-    return SizedBox(
+    return SizedBox(  
       height: 96.h,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: stats.map((stat) {
-          return Stack(
-            children: [
-              Container(
-                width: maxWidth,
-                height: 5.h,
-                decoration: BoxDecoration(
-                  color: color.o(20),
-                  borderRadius: BorderRadius.circular(2.r),
-                ),
-              ),
-
-              Container(
-                width: calculateWidth(stat),
-                height: 5.h,
-                decoration: BoxDecoration(
-                  color: color,
-                  borderRadius: BorderRadius.circular(2.r),
-                ),
-              ),
-            ],
+          return SizedBox(
+            width: maxWidth,
+            child: LinearProgressIndicator(
+              value: stat / maxStats,
+              valueColor: AlwaysStoppedAnimation<Color>(color),
+              backgroundColor: color.o(20),
+              borderRadius: BorderRadius.circular(8.r),
+            ),
           );
         }).toList(),
       ),
