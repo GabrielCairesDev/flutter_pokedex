@@ -109,3 +109,5 @@ O projeto segue uma **arquitetura MVVM simples**, com camadas bem separadas:
 [PokeAPI - https://pokeapi.co/](https://pokeapi.co/)
 
 ---
+
+![Pokedex Flutter](https://media.licdn.com/dms/image/v2/D4D22AQHy8zrpc4vWLQ/feedshare-shrink_2048_1536/B4DZeNQHRDHAAo-/0/1750421502464?e=1753315200&v=beta&t=KwAh_vZff-wqZ5NTJBK8jYkkDu61T4cG3RrcIhJQPik)
