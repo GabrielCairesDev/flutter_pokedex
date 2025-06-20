@@ -87,18 +87,18 @@ Após o primeiro carregamento:
 
 ## ✅ Arquitetura do Projeto
 
-O projeto segue uma **arquitetura MVVM simples**, com camadas bem separadas:
+O projeto segue uma arquitetura baseada em **Clean Architecture com padrão MVVM**, com responsabilidades bem separadas em camadas:
 
-| Camada            | Responsabilidade                          |
-|-------------------|-------------------------------------------|
-| **Models**        | Estruturas de dados (ex: `PokemonModel`) |
-| **Datasource**    | Acesso à API ou ao cache local           |
-| **Repository**    | Camada intermediária entre Datasource e ViewModel |
-| **ViewModel**     | Lógica de tela e controle de estado      |
-| **View (UI)**     | Interface visível ao usuário final       |
+| Camada              | Responsabilidade                                                                 |
+|---------------------|----------------------------------------------------------------------------------|
+| **App**             | Configurações gerais do app, como rotas e tema (`app_config.dart`, `app_routes.dart`) |
+| **Core**            | Constantes, extensões e contratos genéricos reutilizáveis                        |
+| **Data**            | Implementações de acesso a dados (API/local), e modelos (`pokemon_model.dart`, `pokemon_repository_impl.dart`) |
+| **Domain**          | Regras de negócio e contratos da aplicação, como repositórios e usecases         |
+| **Presentation**    | Telas e lógicas de UI, separadas por feature (`home_view_model.dart`, `pokemon_view_model.dart`) |
+| **Shared**          | Componentes visuais reutilizáveis (widgets) entre diferentes telas                |
 
 ---
-
 
 ## ✅ Créditos
 
