@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 /// Fonte de dados remota responsável por buscar informações de Pokémons através da PokeAPI.
 ///
-/// Esta classe implementa o contrato definido pela interface [PokemonRepository],
+/// Esta classe implementa o contrato definido pela interface [PokemonRepositoryImpl ],
 /// realizando chamadas HTTP para obter dados como quantidade total de Pokémons,
 /// detalhes individuais e descrições.
 ///
@@ -17,12 +17,12 @@ import 'package:http/http.dart' as http;
 /// final remoteDatasource = PokemonRemoteDatasource(client: http.Client());
 /// final count = await remoteDatasource.fetchPokemonCount();
 /// ```
-class PokemonRemoteDatasource implements PokemonRepository {
+class PokemonRepositoryImpl implements PokemonRepository {
   /// Cliente HTTP usado para realizar as requisições.
   final http.Client client;
 
   /// Construtor que recebe um [http.Client] para facilitar injeção de dependência e testes.
-  PokemonRemoteDatasource({required this.client});
+  PokemonRepositoryImpl({required this.client});
 
   @override
   Future<int> fetchPokemonCount() async {

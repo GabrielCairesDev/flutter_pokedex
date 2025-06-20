@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/core/constants/app_colors.dart';
 import 'package:flutter_pokedex/app/routes/app_routes.dart';
+import 'package:flutter_pokedex/main.dart';
 import 'package:flutter_pokedex/shared/widgets/back_ground_grid_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/pokemon_grid_widget.dart';
 import 'package:flutter_pokedex/shared/widgets/home_top_widget.dart';
@@ -16,7 +17,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final vm = HomeViewModel();
+  final vm = HomeViewModel(syncPokemonCacheUseCase: getIt());
 
   @override
   void initState() {

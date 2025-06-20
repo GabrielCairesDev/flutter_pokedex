@@ -1,57 +1,23 @@
-import 'package:flutter_pokedex/data/datasources/pokemon_local_datasource.dart';
 import 'package:flutter_pokedex/data/models/pokemon_model.dart';
 
-/// Repositório local responsável por intermediar o acesso ao cache de Pokémons.
+/// Contrato para o repositório de armazenamento local de Pokémon.
 ///
-/// Esta classe encapsula a lógica de persistência local de dados,
-/// delegando as operações ao [PokemonLocalDatasource].
-///
-/// É uma camada extra entre o datasource e a aplicação,
-/// permitindo desacoplar ainda mais o código e facilitar futuras extensões.
-///
-/// Exemplo de uso:
-/// ```dart
-/// await localRepository.savePokemons(listaDePokemons);
-/// List<PokemonModel> pokemons = await localRepository.getAllPokemons();
-/// await localRepository.clearCache();
-/// ```
-class PokemonLocalRepository {
-  /// Instância interna do datasource local de Pokémons.
-  final PokemonLocalDatasource datasource = PokemonLocalDatasource();
+/// Define as operações básicas de cache que devem ser implementadas
+/// por qualquer classe responsável por persistência local dos dados.
+abstract class PokemonLocalStorageRepository {
+  /// Salva uma lista de [PokemonModel] localmente.
+  ///
+  /// Deve sobrescrever qualquer cache anterior.
+  /// - [pokemons]: Lista de pokémons a ser armazenada.
+  Future<void> savePokemons(List<PokemonModel> pokemons);
 
-  /// Salva uma lista de Pokémons no cache local.
+  /// Carrega a lista de [PokemonModel] previamente salva localmente.
   ///
-  /// Parâmetros:
-  /// - [pokemons]: Lista de instâncias de [PokemonModel] a serem armazenadas.
-  ///
-  /// Exemplo:
-  /// ```dart
-  /// await localRepository.savePokemons(listaDePokemons);
-  /// ```
-  Future<void> savePokemons(List<PokemonModel> pokemons) async {
-    await datasource.cachePokemons(pokemons);
-  }
+  /// Retorna uma lista vazia se não houver dados disponíveis ou se ocorrer falha na leitura.
+  Future<List<PokemonModel>> loadPokemons();
 
-  /// Recupera todos os Pokémons armazenados no cache local.
+  /// Limpa todos os dados de pokémons salvos localmente.
   ///
-  /// Retorna:
-  /// - Uma lista de [PokemonModel] com os dados armazenados.
-  ///
-  /// Exemplo:
-  /// ```dart
-  /// List<PokemonModel> pokemons = await localRepository.getAllPokemons();
-  /// ```
-  Future<List<PokemonModel>> getAllPokemons() async {
-    return await datasource.fetchAllPokemons();
-  }
-
-  /// Limpa o cache local, removendo todos os Pokémons armazenados.
-  ///
-  /// Exemplo:
-  /// ```dart
-  /// await localRepository.clearCache();
-  /// ```
-  Future<void> clearCache() async {
-    await datasource.clearPokemons();
-  }
+  /// Útil para cenários como logout, reinicialização de dados ou sincronização forçada.
+  Future<void> clearPokemons();
 }

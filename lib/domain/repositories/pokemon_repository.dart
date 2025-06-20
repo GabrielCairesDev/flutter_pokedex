@@ -1,50 +1,32 @@
 import '../../data/models/pokemon_model.dart';
 
-/// Abstração do repositório de dados de Pokémon.
+/// Contrato para o repositório remoto de Pokémon.
 ///
-/// Define os contratos que qualquer implementação de repositório (local, remoto ou híbrido)
-/// deve seguir para fornecer os dados necessários ao aplicativo.
-///
-/// Permite isolar a lógica de obtenção de dados da camada de apresentação,
-/// facilitando a implementação de testes, manutenção e troca de fontes de dados.
-///
-/// Exemplo de possíveis implementações:
-/// - [PokemonRepositoryImpl] com API e cache.
-/// - Um mock para testes unitários.
+/// Define as operações de obtenção de dados da API, como contagem,
+/// listagem e descrição dos Pokémons.
 abstract class PokemonRepository {
-  /// Busca o número total de espécies de Pokémon disponíveis.
+  /// Obtém o número total de Pokémons disponíveis na API.
   ///
-  /// Este valor geralmente é utilizado para calcular o número máximo de registros
-  /// que podem ser paginados ou carregados.
-  ///
-  /// Retorna:
-  /// - Um inteiro representando a quantidade total de Pokémons disponíveis.
+  /// Retorna um inteiro representando a quantidade total.
   Future<int> fetchPokemonCount();
 
-  /// Busca uma lista de Pokémons com base em uma quantidade específica.
+  /// Busca uma lista com os primeiros [quantity] Pokémons disponíveis.
   ///
-  /// Parâmetros:
-  /// - [quantity]: Quantidade de Pokémons a serem buscados.
+  /// A ordem pode variar conforme a implementação da API.
   ///
-  /// Retorna:
-  /// - Uma lista de [PokemonModel] com as informações básicas dos Pokémons.
+  /// - [quantity]: Número máximo de Pokémons a buscar.
+  /// - Retorna uma lista com até [quantity] objetos [PokemonModel].
   Future<List<PokemonModel>> fetchAllPokemons(int quantity);
 
-  /// Busca os detalhes completos de um Pokémon específico pelo seu ID.
+  /// Busca os dados de um Pokémon específico a partir de seu [id].
   ///
-  /// Parâmetros:
-  /// - [id]: ID numérico do Pokémon.
-  ///
-  /// Retorna:
-  /// - Um [PokemonModel] com os detalhes completos, ou `null` caso não encontrado.
+  /// - [id]: Identificador único do Pokémon (geralmente o número na Pokédex).
+  /// - Retorna um [PokemonModel], ou `null` se não encontrado.
   Future<PokemonModel?> fetchPokemonById(int id);
 
-  /// Busca a descrição em texto de uma espécie de Pokémon.
+  /// Obtém a descrição (flavor text) de um Pokémon específico.
   ///
-  /// Parâmetros:
-  /// - [id]: ID numérico da espécie de Pokémon.
-  ///
-  /// Retorna:
-  /// - Uma [String] contendo a descrição (exemplo: flavor text ou lore).
+  /// - [id]: Identificador do Pokémon.
+  /// - Retorna uma `String` contendo a descrição.
   Future<String> fetchPokemonDescription(int id);
 }
