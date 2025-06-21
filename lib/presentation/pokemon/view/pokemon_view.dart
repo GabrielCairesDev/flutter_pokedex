@@ -15,9 +15,9 @@ class PokemonView extends StatefulWidget {
   State<PokemonView> createState() => _PokemonViewState();
 }
 
-final vm = PokemonViewModel();
-
 class _PokemonViewState extends State<PokemonView> {
+  final vm = PokemonViewModel();
+
   @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
