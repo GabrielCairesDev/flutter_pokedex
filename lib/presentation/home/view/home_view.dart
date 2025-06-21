@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_pokedex/app/config/app_typography.dart';
 import 'package:flutter_pokedex/core/constants/app_colors.dart';
 import 'package:flutter_pokedex/app/routes/app_routes.dart';
 import 'package:flutter_pokedex/main.dart';
@@ -49,23 +50,95 @@ class _HomeViewState extends State<HomeView> {
                   onChangedRadio: (p0) => vm.onChangedRadio(p0),
                   groupValue: vm.groupValue,
                 ),
-                Expanded(
-                  child: BackGroundGridWidget(
-                    child: vm.isLoading
-                        ? Center(child: Text('Carregando...'))
-                        : PokemonGridWidget(
-                            listPokemons: vm.pokemons,
-                            onTap: (pokemon) {
-                              vm.selectPokemon(pokemon);
-                              Navigator.pushNamed(context, AppRoutes.pokemon);
-                            },
-                          ),
-                  ),
-                ),
+                Expanded(child: BackGroundGridWidget(child: _buildContent())),
               ],
             ),
           ),
         );
+      },
+    );
+  }
+
+  /// Constrói o conteúdo principal baseado no estado atual.
+  Widget _buildContent() {
+    if (vm.isLoading) {
+      return Center(
+        child: Text(
+          'Carregando Pokémons...',
+          style: AppTypography().subtitle1.copyWith(
+            color: AppColors.identityPrimary,
+          ),
+        ),
+      );
+    }
+
+    if (vm.hasError) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.error_outline,
+              color: AppColors.identityPrimary,
+              size: 64,
+            ),
+            const SizedBox(height: 16),
+            Text(
+              'Erro ao carregar Pokémons',
+              style: AppTypography().subtitle1.copyWith(
+                color: AppColors.identityPrimary,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              vm.errorMessage ?? 'Erro desconhecido',
+              style: AppTypography().body1.copyWith(
+                color: AppColors.identityPrimary,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: vm.retry,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Tentar Novamente'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: AppColors.identityPrimary,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (vm.pokemons.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.search_off, color: AppColors.identityPrimary, size: 64),
+            SizedBox(height: 16),
+            Text(
+              'Nenhum Pokémon encontrado',
+              style: AppTypography().subtitle1.copyWith(
+                color: AppColors.identityPrimary,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return PokemonGridWidget(
+      listPokemons: vm.pokemons,
+      onTap: (pokemon) {
+        vm.selectPokemon(pokemon);
+        Navigator.pushNamed(context, AppRoutes.pokemon);
       },
     );
   }

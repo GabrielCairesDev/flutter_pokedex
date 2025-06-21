@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/core/constants/app_colors.dart';
 import 'package:flutter_pokedex/app/config/app_typography.dart';
 import 'package:flutter_pokedex/core/constants/app_assets.dart';
-import 'package:flutter_pokedex/presentation/pokemon/view/pokemon_view.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class AppBarWidget extends StatelessWidget {
-  const AppBarWidget({super.key});
+  const AppBarWidget({super.key, required this.title, required this.id});
+
+  final String title;
+  final String id;
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +31,14 @@ class AppBarWidget extends StatelessWidget {
           ),
           SizedBox(width: 8.w),
           Text(
-            vm.pokemonSelected.name,
+            title,
             style: AppTypography().headline.copyWith(
               color: AppColors.grayScaleWhite,
             ),
           ),
           Spacer(),
           Text(
-            '#${vm.pokemonSelected.id.toString()}',
+            '#$id',
             style: AppTypography().subtitle1.copyWith(
               color: AppColors.grayScaleWhite,
             ),

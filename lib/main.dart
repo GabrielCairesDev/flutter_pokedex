@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_pokedex/app/config/app_config.dart';
+import 'package:flutter_pokedex/core/interfaces/http_client_interface.dart';
+import 'package:flutter_pokedex/core/interfaces/storage_interface.dart';
+import 'package:flutter_pokedex/data/datasources/http_client_impl.dart';
 import 'package:flutter_pokedex/data/datasources/pokemon_local_storage_impl.dart';
 import 'package:flutter_pokedex/data/datasources/pokemon_repository_impl.dart';
+import 'package:flutter_pokedex/data/datasources/storage_impl.dart';
 import 'package:flutter_pokedex/domain/repositories/pokemon_local_repository.dart';
 import 'package:flutter_pokedex/domain/repositories/pokemon_repository.dart';
 import 'package:flutter_pokedex/domain/usecases/sync_pokemon_cache_usecase.dart';
@@ -25,18 +29,30 @@ void setupDependencies() {
   /// Utilizado para realizar requisições HTTP em repositórios ou serviços.
   getIt.registerLazySingleton<http.Client>(() => http.Client());
 
+  /// Registra a implementação do cliente HTTP.
+  ///
+  /// Implementação concreta da interface [HttpClientInterface].
+  getIt.registerLazySingleton<HttpClientInterface>(
+    () => HttpClientImpl(client: getIt<http.Client>()),
+  );
+
+  /// Registra a implementação do storage local.
+  ///
+  /// Implementação concreta da interface [StorageInterface].
+  getIt.registerLazySingleton<StorageInterface>(() => StorageImpl());
+
   /// Registra a implementação local do repositório de Pokémon.
   ///
   /// Responsável por persistência local (cache) dos dados.
   getIt.registerFactory<PokemonLocalStorageRepository>(
-    () => PokemonLocalStorageImpl(),
+    () => PokemonLocalStorageImpl(storage: getIt<StorageInterface>()),
   );
 
   /// Registra a implementação remota do repositório de Pokémon.
   ///
   /// Utiliza o cliente HTTP injetado para consumir APIs.
   getIt.registerFactory<PokemonRepository>(
-    () => PokemonRepositoryImpl(client: getIt<http.Client>()),
+    () => PokemonRepositoryImpl(client: getIt<HttpClientInterface>()),
   );
 
   /// Registra o caso de uso de sincronização do cache de Pokémon.

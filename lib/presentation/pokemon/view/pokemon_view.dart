@@ -34,7 +34,10 @@ class _PokemonViewState extends State<PokemonView> {
                     BigPokeball(),
                     Column(
                       children: [
-                        AppBarWidget(),
+                        AppBarWidget(
+                          title: vm.pokemonSelected.name,
+                          id: vm.pokemonSelected.id.toString(),
+                        ),
                         Column(
                           children: [
                             Padding(

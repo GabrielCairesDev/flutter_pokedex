@@ -5,10 +5,11 @@ import 'package:get_it/get_it.dart';
 
 /// ViewModel responsável por controlar o estado da tela inicial da Pokédex.
 ///
-/// - Sincroniza os dados com o cache/local.
+/// - Sincroniza os dados com o cache/local usando o padrão Result.
 /// - Gerencia busca, seleção e navegação entre Pokémons.
 /// - Controla ordenação e filtro.
 /// - Implementa [ChangeNotifier] para atualização reativa da UI.
+/// - Fornece tratamento robusto de erros.
 class HomeViewModel extends ChangeNotifier {
   /// Caso de uso que sincroniza o cache local com os dados da API.
   final SyncPokemonCacheUseCase _syncPokemonCacheUseCase;
@@ -25,6 +26,12 @@ class HomeViewModel extends ChangeNotifier {
   /// Indica se os dados estão sendo carregados.
   bool _isLoading = true;
 
+  /// Indica se houve erro durante o carregamento.
+  bool _hasError = false;
+
+  /// Mensagem de erro para exibição ao usuário.
+  String? _errorMessage;
+
   /// Valor atual do grupo de ordenação (1 = por ID, 2 = por nome).
   int groupValue = 1;
 
@@ -36,6 +43,12 @@ class HomeViewModel extends ChangeNotifier {
 
   /// Retorna se os dados ainda estão carregando.
   bool get isLoading => _isLoading;
+
+  /// Retorna se houve erro durante o carregamento.
+  bool get hasError => _hasError;
+
+  /// Retorna a mensagem de erro para exibição.
+  String? get errorMessage => _errorMessage;
 
   /// Retorna se o Pokémon selecionado é o primeiro da lista filtrada.
   bool get isFirst =>
@@ -73,13 +86,45 @@ class HomeViewModel extends ChangeNotifier {
   Future<void> init() async {
     _registerInGetIt();
     _setLoading(true);
-    _pokemons = await _syncPokemonCacheUseCase();
-    _setLoading(false);
+    _clearError();
+
+    final result = await _syncPokemonCacheUseCase();
+
+    result.when(
+      success: (pokemons) {
+        _pokemons = pokemons;
+        _setLoading(false);
+        _clearError();
+      },
+      failure: (error) {
+        _setError(error.message);
+        _setLoading(false);
+      },
+    );
+  }
+
+  /// Tenta recarregar os dados em caso de erro.
+  Future<void> retry() async {
+    await init();
   }
 
   /// Altera o estado de carregamento e notifica a UI.
   void _setLoading(bool value) {
     _isLoading = value;
+    notifyListeners();
+  }
+
+  /// Define um erro e notifica a UI.
+  void _setError(String message) {
+    _hasError = true;
+    _errorMessage = message;
+    notifyListeners();
+  }
+
+  /// Limpa o estado de erro e notifica a UI.
+  void _clearError() {
+    _hasError = false;
+    _errorMessage = null;
     notifyListeners();
   }
 
